@@ -1,0 +1,25 @@
+<!--<div class="progress">-->
+  <!--<div class="progress-bar progress-bar-info progress-bar-striped active" [ngStyle]="{'width': widthProgress}"></div>-->
+  <!--<div class="progress-value progress-value1">Idea generation</div>-->
+  <!--<div class="progress-value progress-value2">Validation</div>-->
+  <!--<div class="progress-value progress-value3">Analysis</div>-->
+  <!--<div class="progress-value progress-value4">Implementation</div>-->
+<!--</div>-->
+<table class="table-condensed">
+ <tr>
+   <td>Concept</td>
+   <td>Analysis</td>
+   <td>Validation</td>
+   <td>Implementation</td>
+ </tr>
+  <tr>
+    <td colspan="4">
+      <div class="progress">
+        <div class="progress-bar progress-bar1" *ngIf="stageNum>0"></div>
+        <div class="progress-bar progress-bar2" *ngIf="stageNum>1"></div>
+        <div class="progress-bar progress-bar3" *ngIf="stageNum>2"></div>
+        <div class="progress-bar progress-bar4" *ngIf="stageNum>3"></div>
+      </div>
+    </td>
+  </tr>
+</table>

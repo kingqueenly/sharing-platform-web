@@ -1,0 +1,200 @@
+.shop-floor {
+    margin-top: 20px;
+}
+
+.shop-floor .col-md-12 .btn-lg {
+    width: 49%;
+    color: #612F00;
+    vertical-align: inherit;
+}
+
+.shop-floor .row-button {
+    z-index: 100;
+    margin-top: -50px;
+}
+
+.shop-floor .table {
+    margin-right: 0px;
+    padding-left: 0px;
+    /*background: url("assets/board.png") no-repeat left top fixed;*/
+    background: #F9C989;;
+    -moz-background-size: 100% 100%;
+    background-size: 100% 100%;
+}
+
+.shop-floor .table {
+    margin-bottom: 0px;
+}
+
+.shop-floor .stage-td1, .shop-floor .stage-td2, .shop-floor .stage-td3, .shop-floor .stage-td4 {
+    font-size: 20px;
+    border-radius: 2px;
+}
+
+.shop-floor .stage-td0 {
+    background: rgba(255, 239, 242, 0.5);
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: rgba(197, 123, 125, 0.1) !important;
+}
+
+.shop-floor .stage-td1 {
+    background-color: #00a0e9;
+    color: #fff;
+}
+
+.shop-floor .stage-td2 {
+    background-color: #FFCF4F;
+    color: #612F00;
+}
+
+.shop-floor .stage-td3 {
+    background-color: #EA4549;
+    color: #612F00;
+}
+
+.shop-floor .stage-td4 {
+    background-color: #1F4E84;
+    color: #fff;
+}
+
+.shop-floor .table .x-aris1,
+.shop-floor .table .x-aris2,
+.shop-floor .table .x-aris3,
+.shop-floor .table .x-aris4,
+.shop-floor .table .x-aris5{
+    width: 160px;
+    font-size: 14px;
+    height: 130px;
+    vertical-align: middle;
+    overflow: hidden;
+    color: #f9c989;
+
+    background: rgba(255, 239, 242, 0.5);
+    padding: 0;
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: rgba(197, 123, 125, 0.1) !important;
+}
+.shop-floor .table .x-aris7 {
+    width: 160px;
+    font-size: 14px;
+    height: 130px;
+    vertical-align: middle;
+    overflow: hidden;
+    color: #f9c989;
+
+    background: rgba(255, 239, 242, 0.5);
+    padding: 0;
+}
+
+/*.shop-floor .table .column1:hover {*/
+/*background: rgba(197,123,125,0.2);*/
+/*}*/
+
+.shop-floor .table .column1 .icon0 {
+    width: 100%;
+    height: 40px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.shop-floor .link {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+.shop-floor .link a {
+    display: block;
+}
+
+.shop-floor .link .mark0 {
+    font-weight: bold;
+    font-size: 12px;
+    display: block;
+    text-align: right;
+    padding-right: 15px;
+}
+
+.shop-floor .x-aris1 .icon0 {
+    background: url("assets/Awareness.png");
+}
+
+.shop-floor .x-aris2 .icon0 {
+    background: url("assets/Consideration.png");
+}
+
+.shop-floor .x-aris3 .icon0 {
+    background: url("assets/Purchase.png");
+}
+
+.shop-floor .x-aris4 .icon0 {
+    background: url("assets/CustomerCareUsage.png");
+}
+
+.shop-floor .x-aris5 .icon0 {
+    background: url("assets/LoyaltyRepurchase.png");
+}
+
+.shop-floor .x-aris6 {
+    background: rgba(255, 239, 242, 0.5);
+    height: 50px;
+}
+
+.shop-floor .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    border: none;
+}
+
+.shop-floor .create-btn {
+    border: 2px #612F00 solid;
+    background-color: #F6C889;
+    color: #612F00;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+.shop-floor-case {
+    /*background: url('assets/note.png') no-repeat 10px 0;*/
+}
+
+.shop-floor .case-div {
+    width: 210px;
+    height: 134px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 33px;
+    padding-left: 20px;
+}
+
+.shop-floor .case-div-bg {
+    background: url('assets/note.png') no-repeat 0 0;
+}
+
+.shop-floor .case-div ul,
+.shop-floor .case-div ul li {
+    padding: 0;
+    margin: 0;
+}
+
+.shop-floor .case-div ul {
+    list-style-position: inside;
+    padding-right: 20px;
+}
+
+.shop-floor .case-div p {
+    margin-bottom: 0px;
+    width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.shop-floor .category {
+    padding: 0 10px !important;
+}
+
+.shop-floor .category i {
+    margin-top: 4px;
+}

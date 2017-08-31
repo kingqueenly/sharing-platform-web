@@ -1,0 +1,82 @@
+<div class="shop-floor">
+    <div class="row table-row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table ">
+                <thead>
+                <tr>
+                    <td class="stage-td0 text-center" style="vertical-align: bottom;">
+                        <a [hidden]="expanded" href="javascript:void(0)" (click)="toggleCategory()">
+                            Customer Journey <i [class.fa-caret-up]="true" class="fa"></i>
+                        </a>
+                    </td>
+                    <td class="stage-td1 text-center">Concept</td>
+                    <td class="stage-td2 text-center">Analysis</td>
+                    <td class="stage-td3 text-center">Validation</td>
+                    <td class="stage-td4 text-center">Implementation</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr [hidden]="!expanded" *ngFor="let category of categoryList">
+                    <td class="text-left category"
+                        [class.x-aris1]="category.category != 'Other Use Case'"
+                        [class.x-aris7]="category.category == 'Other Use Case'">
+                        <a *ngIf="category.category != 'Other Use Case'" href="javascript:void(0)" (click)="toggleCategory()">
+                            {{category.category}} <i [class.fa-caret-down]="true" class="fa"></i>
+                        </a>
+                        <a *ngIf="category.category == 'Other Use Case'" href="javascript:void(0)">
+                            {{category.category}}
+                        </a>
+                    </td>
+                    <td *ngFor="let stageList of category.list" [class.shop-floor-case]="stageList.list.length>0">
+                        <div [class.case-div-bg]="stageList.list.length>0" class="case-div">
+                            <ul>
+                                <li *ngFor="let case of stageList.list; let i=index" [hidden]="i>=3"
+                                    class="text-ellipsis">
+                                    <a *ngIf="i<3" [routerLink]="['/case/detail', case.id]">{{case.subject}}</a>
+                                </li>
+                            </ul>
+                            <p><a *ngIf="stageList.list.length>3" [routerLink]="['/case/phase','All',stageList.stage]">more</a>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr [hidden]="expanded" *ngFor="let phaseList of listPagedList">
+                    <td class="text-left" [title]="getTooltip(phaseList.phase)"
+                        [class.x-aris1]="phaseList.phase=='Awareness'"
+                        [class.x-aris2]="phaseList.phase=='Consideration'"
+                        [class.x-aris3]="phaseList.phase=='Purchase'"
+                        [class.x-aris4]="phaseList.phase=='Customer Care/Usage'"
+                        [class.x-aris5]="phaseList.phase=='Loyalty/Repurchase'"
+                        [class.x-aris7]="phaseList.phase=='Others'">
+                        
+                        <span *ngIf="phaseList.phase!='Others'" class="icon0"></span>
+                        <span class="link">
+             <a *ngIf="phaseList.phase=='Others'"
+                [routerLink]="['/case/phase',phaseList.phase,'All']">Other Use Case</a>
+             <a *ngIf="phaseList.phase!='Others'" [routerLink]="['/case/phase',phaseList.phase,'All']">{{phaseList.phase}}</a>
+           </span>
+                    </td>
+                    <td *ngFor="let stageList of phaseList.list" [class.shop-floor-case]="stageList.list.length>0">
+                        <div [class.case-div-bg]="stageList.list.length>0" class="case-div">
+                            <ul>
+                                <li *ngFor="let case of stageList.list; let i=index" [hidden]="i>=3"
+                                    class="text-ellipsis">
+                                    <a *ngIf="i<3" [routerLink]="['/case/detail', case.id]">{{case.subject}}</a>
+                                </li>
+                            </ul>
+                            <p><a *ngIf="stageList.list.length>3"
+                                  [routerLink]="['/case/phase',phaseList.phase,stageList.stage]">more</a></p>
+                        </div>
+                    </td>
+                </tr>
+                <!--<tr>-->
+                <!--<td  class="x-aris6"></td>-->
+                <!--<td colspan="4" class="text-right">-->
+                <!--<button class="btn btn-sm create-btn" [routerLink]="['/case/create']">Create New Use Case</button>-->
+                <!--</td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

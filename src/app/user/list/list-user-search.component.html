@@ -1,0 +1,28 @@
+<div class="row user-search">
+  <div class="row data-community-search">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+      <div class="input-group input-group-sm">
+        <div class="input-group-btn" dropdown>
+          <button dropdownToggle type="button" class="btn dropdown-toggle">{{searchItem}}&nbsp;&nbsp;<span class="caret"></span></button>
+          <ul *dropdownMenu class="dropdown-menu" role="menu" style="margin-top:-3px;">
+            <li *ngFor="let item of searchUserItems"><a class="dropdown-item" (click)="selectSearchItem($event,item)" href="#">{{item}}</a></li>
+          </ul>
+        </div><!-- /btn-group -->
+        <input type="text" class="form-control" placeholder="Type your search here..." [(ngModel)]="inputValue">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-search" (click)="searchUser();">Search</button>
+          </span>
+      </div><!-- /input-group -->
+    </div>
+  </div>
+</div>
+
+<user-list [userList]="pagedList.list" ></user-list>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <a class="btn btn-default btn-block show-more" (click)="showMore();"
+       *ngIf="pagedList.hasNextPage"><span>Show more </span><i class="fa fa-angle-double-down"
+                                                               aria-hidden="true"></i></a>
+  </div>
+</div>

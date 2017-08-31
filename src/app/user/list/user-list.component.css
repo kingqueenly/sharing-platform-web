@@ -1,0 +1,50 @@
+.search-user-list img{
+  border: 2px solid #000000;
+  max-width: none;
+  width: 60px;
+  height: 60px;
+}
+
+.search-user-list .panel-body{
+  padding: 10px 10px 10px 20px;
+}
+
+.search-user-list h1{
+  height: 60px;
+  line-height: 60px;
+  font-size: 24px;
+  border-right: 1px solid #f5f5f5;
+}
+
+.search-user-list p{
+  font-size: 18px;
+  margin-bottom: 0px;
+}
+
+.search-user-list .user-department-div{
+  border-right: 1px solid #f5f5f5;
+  height: 60px;
+}
+
+.search-user-list .user-department-div p{
+  padding-top: 5px;
+}
+
+.search-user-list .panel-body:hover{
+  border: 1px solid #999999;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.search-user-list span{
+  color: #b4b4b4;
+  font-size: 16px;
+}
+
+.user-list-row .panel{
+  margin-bottom: 15px;
+}
+
+.user-list-row .panel:first-child{
+  margin-top: 5px;
+}

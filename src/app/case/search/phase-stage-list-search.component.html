@@ -1,0 +1,28 @@
+<div class="row case-filter">
+  <div class="filter-label">Phase:</div>
+  <div class="filter-item">
+    <ul>
+      <li *ngFor="let p of phases">
+        <a href="javascript:void(0)" [class.selected]="phase==p" [routerLink]="['/case/phase',p,stage]">{{p}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row case-filter">
+  <div class="filter-label">Stage:</div>
+  <div class="filter-item">
+    <ul>
+      <li *ngFor="let s of stages">
+        <a href="javascript:void(0)" [class.selected]="stage==s" [routerLink]="['/case/phase',phase,s]">{{s}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<case-list [pagedList]="pagedList"></case-list>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <a class="btn btn-default btn-block show-more" (click)="showMore();"
+       *ngIf="pagedList.hasNextPage"><span>Show more </span><i class="fa fa-angle-double-down"
+                                                               aria-hidden="true"></i></a>
+  </div>
+</div>

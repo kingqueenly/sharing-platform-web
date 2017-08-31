@@ -1,0 +1,228 @@
+<div class="row" *ngIf="siteCase.id!=null">
+    <div class="col-xs-12">
+        <div class="panel view-case">
+            <div class="panel-heading row">
+                <div *ngIf="siteCase.subject!=undefined" class="col-sm-10">
+                    {{siteCase.subject}}
+                    <button class="btn btn-xs btn-default" [routerLink]="['/case/edit', siteCase.id]"
+                            *ngIf="siteCase.userId == userInfo.id || userInfo.authority=='administrator'">Edit
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="view-mail-header">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="javascript:void(0);" [routerLink]="['/user/detail',siteCase.userId]">
+                                <img *ngIf="siteCase.userImgUrl!=null && siteCase.userImgUrl!=''"
+                                     class="media-object img-circle" src={{filePath+siteCase.userImgUrl}}>
+                                <img *ngIf="siteCase.userImgUrl==null || siteCase.userImgUrl==''"
+                                     class="media-object img-circle" src="assets/header.png">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-username">{{siteCase.userName}}</h4>
+                            <small>{{siteCase.createTime|amDateFormat:'YYYY-MM-DD HH:mm'}}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-mail-reply pull-right text-center">
+                    <p>
+                        <i class="fa fa-eye"></i><span>{{siteCase.viewNum}}</span>
+                    </p>
+                    <button class="btn btn-sm" [routerLink]="['/case/clone', siteCase.id]">Clone</button>
+                </div>
+                <div class="content">
+                    <!--<div *ngIf="siteCase.values != undefined && siteCase.values.length != 0">-->
+                    <!--<h2>Business Value</h2>-->
+                    <!--<p><span *ngFor="let value of siteCase.values">{{value.text}}</span></p>-->
+                    <!--</div>-->
+                    <div *ngIf="siteCase.values != undefined">
+                        <h2>Objective</h2>
+                        <!--<p><span >{{siteCase.values}}</span></p>-->
+                        <p><span *ngFor="let value of siteCase.values">{{value.text}}</span></p>
+                    </div>
+                    <div>
+                        <h2>Description</h2>
+                        <p>{{siteCase.scenario}}</p>
+                    </div>
+                    <div *ngIf="siteCase.dataSource != undefined && siteCase.dataSource.length > 0">
+                        <h2>Data Source</h2>
+                        <p><span *ngFor="let dataSource of siteCase.dataSource">{{dataSource.text}}</span></p>
+                    </div>
+                    <div *ngIf="siteCase.dataSourceOther != undefined && siteCase.dataSourceOther.length !=0">
+                        <h2>Data Source Other(s)</h2>
+                        <p>{{siteCase.dataSourceOther}}</p>
+                    </div>
+                    <div *ngIf="siteCase.dataTypeDescription != undefined ">
+                        <h2>Data Type Description</h2>
+                        <p>{{siteCase.dataTypeDescription}}</p>
+                    </div>
+                    <div *ngIf="siteCase.dataAnalysisModel != undefined && siteCase.dataAnalysisModel.length !=0">
+                        <h2>Data Analysis Model</h2>
+                        <p><span
+                            *ngFor="let dataAnalysisModel of siteCase.dataAnalysisModel">{{dataAnalysisModel.text}}</span>
+                        </p>
+                    </div>
+                    <div
+                        *ngIf="siteCase.dataAnalysisModelOther != undefined && siteCase.dataAnalysisModelOther.length !=0">
+                        <h2>Data Analysis Model Other(s)</h2>
+                        <p>{{siteCase.dataAnalysisModelOther}}</p>
+                    </div>
+                    <div
+                        *ngIf="siteCase.analysisMethodResultText != undefined || (siteCase.analysisMethodResultFiles != undefined && siteCase.analysisMethodResultFiles.length > 0)">
+                        <h2>Analysis Description and Result</h2>
+                        <p *ngIf="siteCase.analysisMethodResultText != undefined">
+                            {{siteCase.analysisMethodResultText}}</p>
+                        <div
+                            *ngIf="siteCase.analysisMethodResultFiles != undefined && siteCase.analysisMethodResultFiles.length > 0"
+                            class="row">
+                            <div *ngFor="let file of siteCase.analysisMethodResultFiles" class="col-md-3">
+                                <!--<img class="img-responsive img-thumbnail" src={{file.url}} alt="">-->
+                                <img-popup [imageUrl]="filePath+file.url"></img-popup>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="siteCase.validationMethodResultText != undefined || (siteCase.validationMethodResultFiles != undefined && siteCase.validationMethodResultFiles.length >0)">
+                        <h2>Validation Plan and Result</h2>
+                        <p *ngIf="siteCase.validationMethodResultText != undefined">
+                            {{siteCase.validationMethodResultText}}</p>
+                        <div class="row"
+                             *ngIf="siteCase.validationMethodResultFiles != undefined && siteCase.validationMethodResultFiles.length >0">
+                            <div class="col-md-3" *ngFor="let file of siteCase.validationMethodResultFiles">
+                                <!--<img class="img-responsive img-thumbnail" src={{file.url}} alt="">-->
+                                <img-popup [imageUrl]="filePath+file.url"></img-popup>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="siteCase.implMethodResultText != undefined || (siteCase.implMethodResultFiles != undefined && siteCase.implMethodResultFiles.length>0)">
+                        <h2>Implementation Plan and Result</h2>
+                        <p *ngIf="siteCase.implMethodResultText != undefined">{{siteCase.implMethodResultText}}</p>
+                        <div class="row"
+                             *ngIf="siteCase.implMethodResultFiles != undefined && siteCase.implMethodResultFiles.length>0">
+                            <div class="col-md-3" *ngFor="let file of siteCase.implMethodResultFiles">
+                                <!--<img class="img-responsive img-thumbnail" src={{file.url}} alt="">-->
+                                <img-popup [imageUrl]="filePath+file.url"></img-popup>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="siteCase.phase != undefined">
+                        <h2>Category of Use Case</h2>
+                        <p>{{siteCase.phase}}</p>
+                    </div>
+                    <div *ngIf="siteCase.contributionBU != undefined">
+                        <h2>Relevant Contribution Department</h2>
+                        <p><span *ngFor="let bu of siteCase.contributionBU">{{bu.text}}</span></p>
+                    </div>
+                    <div *ngIf="siteCase.stage != undefined">
+                        <h2>Stage</h2>
+                        <p>{{siteCase.stage}}</p>
+                    </div>
+                    <div>
+                        <h2>Timeline for {{timelineFor}}</h2>
+                        <p>{{siteCase.fromDate|amDateFormat:'YYYY/MM/DD'}} -
+                            {{siteCase.toDate|amDateFormat:'YYYY/MM/DD'}}</p>
+                    </div>
+                    <div *ngIf="siteCase.referenceCase != undefined">
+                        <h2>Reference Case</h2>
+                        <p>{{siteCase.referenceCase}}</p>
+                    </div>
+                    <div *ngIf="siteCase.needHelp != undefined">
+                        <h2>I Need Help</h2>
+                        <p>{{siteCase.needHelp}}</p>
+                    </div>
+                    <div *ngIf="siteCase.attachments != undefined && siteCase.attachments.length!=0">
+                        <h2>Attachment</h2>
+                        <div class="row">
+                            <div class="col-md-4" *ngFor="let file of siteCase.attachments">
+                                <p><span
+                                    [class.doc]="file.fileName.indexOf('.docx')>-1 || file.fileName.indexOf('.doc')>-1"
+                                    [class.xlsx]="file.fileName.indexOf('.xlsx')>-1 || file.fileName.indexOf('.xls')>-1"
+                                    [class.ppt]="file.fileName.indexOf('.pptx')>-1 || file.fileName.indexOf('.ppt')>-1"
+                                    [class.pdf]="file.fileName.indexOf('.pdf')>-1"
+                                    [class.other]="file.fileName.indexOf('.docx')==-1&&
+                         file.fileName.indexOf('.doc')==-1&&
+                         file.fileName.indexOf('.xlsx')==-1&&
+                         file.fileName.indexOf('.xls')==-1&&
+                         file.fileName.indexOf('.pdf')==-1 &&
+                         file.fileName.indexOf('.pptx')==-1&&
+                         file.fileName.indexOf('.ppt')==-1"><small>{{file.fileName}}</small></span>
+                                    <a href={{filePath+file.url}} class="btn btn-sm">Download</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div>
+                    <a href="javascript:void(0);" class="btn btn-sm" (click)="likeCase();"><i class="fa fa-thumbs-o-up"
+                                                                                              [class.like]="isLoginUserLikeCase"></i>
+                        {{siteCase.likeNum}} </a>
+                    <a href="javascript:void(0);" class="btn btn-sm" (click)="showComment()"><i
+                        class="fa fa-comment-o"></i>
+                        {{siteCase.commentNum}} </a>
+                    <a href="mailto:{{siteCase.email}}" class="btn btn-sm" (click)="shareCase();"><i
+                        class="fa fa-share"></i> {{siteCase.shareNum}}
+                    </a>
+                </div>
+                <div [class.view_case_comment]="isClickComment || isExistComment">
+                    <div class="case_comment text-right" *ngIf="isClickComment">
+                        <textarea class="form-control" [(ngModel)]="addCommentValue"></textarea>
+                        <button class="btn btn-sm" (click)="addComment();">Send</button>
+                    </div>
+                    <div class="media" [hidden]="!isExistComment" *ngFor="let comment of pagedListComment.list">
+                        <div class="media-left">
+                            <img *ngIf="comment.userImgUrl!=null && comment.userImgUrl!=''"
+                                 class="media-object img-circle" src={{filePath+comment.userImgUrl}}>
+                            <img *ngIf="comment.userImgUrl==null || comment.userImgUrl==''"
+                                 class="media-object img-circle" src="assets/header.png">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-username">{{comment.userName}}:</h4>
+                            <p>{{comment.content}}</p>
+                            <small>{{comment.createTime | amDateFormat:'YYYY-MM-DD HH:mm'}}</small>
+                            <div>
+                                <a class="btn" (click)="showReplyComment(comment.id);"><i
+                                    class="fa fa-commenting-o"></i> Reply </a>
+                                <a class="btn" *ngIf="comment.userId==userInfo.id"
+                                   (click)="deleteComment(comment.id);"><i class="fa fa-trash"></i> Delete </a>
+                                <a class="btn" [style.display]="isReplyComment!=comment.id ?'none':''"
+                                   (click)="cancelReplyComment();"><i class="fa fa-trash"></i> Cancel </a>
+                            </div>
+                            <div class="case_comment text-right" [hidden]="isReplyComment !=comment.id">
+                                <textarea class="form-control" [(ngModel)]="replyCommentValue"></textarea>
+                                <button class="btn btn-sm" (click)="replyComment(comment.id);">Send</button>
+                            </div>
+                            <div class="media" *ngFor="let child of comment.children">
+                                <div class="media-left">
+                                    <img *ngIf="child.userImgUrl!=null && child.userImgUrl!=''"
+                                         class="media-object img-circle" src={{filePath+child.userImgUrl}}>
+                                    <img *ngIf="child.userImgUrl==null || child.userImgUrl==''"
+                                         class="media-object img-circle" src="assets/header.png">
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-username">{{child.userName}} reply to {{comment.userName}}</h4>
+                                    <p>{{child.content}}</p>
+                                    <small>{{child.createTime | amDateFormat:'YYYY-MM-DD HH:mm'}}</small>
+                                    <div>
+                                        <a class="btn" *ngIf="child.userId==userInfo.id"
+                                           (click)="deleteComment(child.id);"><i class="fa fa-trash"></i> Delete </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-default btn-block show-more" (click)="showMore();"
+                           *ngIf="pagedListComment.hasNextPage"><span>Show more </span><i
+                            class="fa fa-angle-double-down"
+                            aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

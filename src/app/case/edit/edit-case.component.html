@@ -1,0 +1,269 @@
+<div class="row create-case">
+    <div class="col-xs-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h1 *ngIf="isCreate">Please choose the stage before you create case</h1>
+            </div>
+            <div class="panel-body">
+                <div id="MyWizard" class="wizard" *ngIf="isCreate">
+                    <ul class="steps">
+                        <li data-target="#step1" [class.active]="step==1" (click)="step1('step1');">
+                            <span class="badge" [class.badge-info]="step==1">1</span>Concept<span
+                            class="chevron"></span>
+                        </li>
+                        <li data-target="#step2" (click)="step2('step2');" [class.active]="step==2">
+                            <span class="badge " [class.badge-info]="step==2">2</span>Analysis<span
+                            class="chevron"></span>
+                        </li>
+                        <li data-target="#step3" (click)="step3('step3');" [class.active]="step==3">
+                            <span class="badge" [class.badge-info]="step==3">3</span>Validation<span
+                            class="chevron"></span>
+                        </li>
+                        <li data-target="#step4" (click)="step4('step4');" [class.active]="step==4">
+                            <span class="badge" [class.badge-info]="step==4">4</span>Implementation<span
+                            class="chevron"></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="row create-case-form" *ngIf="isCreate || ((isEdit|| isClone) && siteCase.id!=null)">
+                    <div class="col-xs-12">
+                        <div class="panel">
+                            <div class="panel-body editview">
+                                <form class="form-horizontal form-border" id="form" novalidate="novalidate"
+                                      *ngIf="active"
+                                      (ngSubmit)="onSubmit()" #siteForm="ngForm">
+                                    <div class="form-group" *ngIf="!isCreate">
+                                        <label class="col-sm-3 control-label" for="stage">Stage:</label>
+                                        <div class="col-sm-6">
+                                            <ng-select [items]="stages" placeholder="Please select" id="stage"
+                                                       class="single-select"
+                                                       [active]="selectedStages" (selected)="refreshStage($event)">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="subject">Use Case Name:</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="subject" required
+                                                   [(ngModel)]="siteCase.subject"
+                                                   name="subject" #subjectValue="ngModel" (keyup)="0">
+                                            <div
+                                                [hidden]="subjectValue.pristine ||  (subjectValue.valid && siteCase.subject.length<=255)"
+                                                class="alert alert-danger">
+                                                Use Case Name is necessary and the max length is 255
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="value">Objective:</label>
+                                        <div class="col-sm-6">
+                                            <ng-select [multiple]=true [items]="values" placeholder="Please select"
+                                                       id="value"
+                                                       (data)="refreshValue($event)"
+                                                       [active]="siteCase.values"></ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="scenario">Description:</label>
+                                        <div class="col-sm-6">
+                      <textarea class="form-control" required [(ngModel)]="siteCase.scenario" name="scenario"
+                                id="scenario" placeholder="Project Background & Objectives"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="data-source">Data Source:</label>
+                                        <div class="col-sm-6">
+                                            <ng-select [multiple]=true [items]="dataSource" placeholder="Please select"
+                                                       id="data-source"
+                                                       [active]="siteCase.dataSource"
+                                                       (data)="dataSourceValue($event)"
+                                                       (removed)="dataSourceRemoved($event)"
+                                                       (selected)="dataSourceSelected($event)"
+                                                       ></ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="showDataSourceOthers">
+                                        <label class="col-sm-3 control-label" for="data-source">Data Source Other(s):</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control"
+                                                   [(ngModel)]="siteCase.dataSourceOther"
+                                                   id="data-source-others"
+                                                   placeholder="e.g. A data source, B data source, C data source, etc."
+                                                   name="data-source-others">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="data-type-description">Data Type
+                                            Description:</label>
+                                        <div class="col-sm-6">
+                      <textarea class="form-control" [(ngModel)]="siteCase.dataTypeDescription"
+                                name="dataTypeDescription" id="data-type-description"
+                                placeholder="e.g. Demographic data from Salesforce, Maintenance data from DMS, etc."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="data-analysis-model">Data Analysis
+                                            Model:</label>
+                                        <div class="col-sm-6">
+                                            <ng-select [multiple]=true [items]="dataAnalysisModel"
+                                                       placeholder="Please select"
+                                                       id="data-analysis-model" [active]="siteCase.dataAnalysisModel"
+                                                       (data)="dataAnalysisModelValue($event)"
+                                                       (selected)="dataAnalysisModelSelected($event)"
+                                                       (removed)="dataAnalysisModelRemoved($event)"
+                                            ></ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="showModelOthers">
+                                        <label class="col-sm-3 control-label" for="data-analysis-model">Data Analysis
+                                            Model Other(s):</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control"
+                                                   [(ngModel)]="siteCase.dataAnalysisModelOther"
+                                                   id="data-analysis-model-others"
+                                                   placeholder="e.g. A model, B model, C model, etc."
+                                                   name="data-analysis-model-others">
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="analysis-method-result">Analysis
+                                            Description and Result:</label>
+                                        <div class="col-sm-6">
+                                            <div class="files-text">
+                                                <file-upload [files]="siteCase.analysisMethodResultFiles"
+                                                             [isImageUpload]=true
+                                                             (uploadFinished)="uploadFinished($event)"></file-upload>
+                                                <textarea class="form-control" id="analysis-method-result"
+                                                          [(ngModel)]="siteCase.analysisMethodResultText"
+                                                          name="analysisMethodResultText"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="validation-method-result">Validation
+                                            Plan and Result:</label>
+                                        <div class="col-sm-6">
+                                            <div class="files-text">
+                                                <file-upload [files]="siteCase.validationMethodResultFiles"
+                                                             [isImageUpload]=true
+                                                             (uploadFinished)="uploadFinished($event)"></file-upload>
+                                                <textarea class="form-control" id="validation-method-result"
+                                                          [(ngModel)]="siteCase.validationMethodResultText"
+                                                          name="validationMethodResultText">
+                      </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="implementation-method-result">Implementation
+                                            Plan and Result:</label>
+                                        <div class="col-sm-6">
+                                            <div class="files-text">
+                                                <file-upload [files]="siteCase.implMethodResultFiles"
+                                                             [isImageUpload]=true
+                                                             (uploadFinished)="uploadFinished($event)"></file-upload>
+                                                <textarea class="form-control" id="implementation-method-result"
+                                                          [(ngModel)]="siteCase.implMethodResultText"
+                                                          name="implMethodResultText">
+                      </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<a href="javascript:void(0);" (click)="fillOutMoreInfo();" [hidden]="isFillOut"><span-->
+                                    <!--class="fill-out">Fill out more information</span><span class="triangle-down"></span></a>-->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="phase">Category of Use Case:</label>
+                                        <div class="col-sm-6">
+                                            <ng-select [items]="phases" placeholder="Please select" id="phase"
+                                                       required="required" class="single-select"
+                                                       [active]="selectedPhases" (selected)="refreshPhase($event)">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Relevant Contribution Department:</label>
+                                        <div class="col-sm-6">
+                                            <ng-select [multiple]=true [items]="contribution_BU_S.list"
+                                                       placeholder="Please select" id="contributionBU"
+                                                       [active]="siteCase.contributionBU"
+                                                       (data)="contributionbuValue($event)">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <script src="moment-with-locales.min.js"></script>
+                                        <script src="moment.min.js"></script>
+                                        <label class="col-sm-3 control-label">Timeline for {{timelineFor}}:</label>
+                                        <div class="col-sm-3">
+                                            <div class="col-sm-2 control-label">
+                                                from
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control " required="required"
+                                                       [(ngModel)]="siteCase.fromDate" name="fromDate"
+                                                       ng2-datetime-picker date-only="true"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="col-sm-2 control-label">
+                                                to
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control " placeholder=""
+                                                       required="required"
+                                                       [(ngModel)]="siteCase.toDate" name="toDate" ng2-datetime-picker
+                                                       date-only="true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label need-help" for="help">
+                                            <i class="fa fa-hourglass-o" aria-hidden="true"></i>
+                                            I need help:
+                                        </label>
+                                        <div class="col-sm-6">
+                      <textarea class="form-control" [(ngModel)]="siteCase.needHelp" name="help" id="help"
+                                placeholder="You may write any help you need regarding use setup, insight generation, validation and implementaiton, etc."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Attachment:</label>
+                                        <div class="col-sm-6">
+                                            <div class="files-text">
+                                                <file-upload [(files)]="siteCase.attachments" [isImageUpload]=false
+                                                             (uploadFinished)="uploadFinished($event)"></file-upload>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="isClone">
+                                        <label class="col-sm-3 control-label">Reference Case:</label>
+                                        <div class="col-sm-6 text-center">
+                                            <label class="control-label">{{caseUrl}}</label>
+                                        </div>
+                                    </div>
+                                    <!--<a href="javascript:void(0);" (click)="packUp();" [hidden]="isPackUp"><span-->
+                                    <!--class="triangle-up"></span><span class="pack-up">Pack up</span></a>-->
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-5 col-sm-6">
+                                            <button type="submit" class="btn btn-info btn-lg"
+                                                    [disabled]="processing || !siteForm.form.valid || !isUploadFinished ">
+                                                {{submitBtnText}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-6 col-sm-12">
+    <section class="panel">
+      <div class="panel-body">
+        <button class="btn btn-sm btn-primary" (click)="create()"><i class="fa fa-plus"></i> New</button>
+        <div class="table-responsive">
+          <table class="table table-inbox table-hover">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>name</th>
+              <th>operation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let value of valueList.list; let j=index" >
+              <th scope="row">{{j+1}}</th>
+              <td><span class="title">{{value.text}}</span></td>
+              <td>
+                <button class="btn btn-default btn-xs tooltips" data-original-title="Trash" data-toggle="tooltip"
+                        (click)="edit(value)">
+                  <i class="fa fa-trash-o"></i> Update
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form role="form" id="form" novalidate="novalidate" (ngSubmit)="onSubmit()" #f="ngForm">
+          <div class="form-group">
+            <label>name</label>
+            <input type="text" class="form-control" placeholder="Enter name" id="name" name="name" required
+                   [(ngModel)]="editValue.text">
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!f.form.valid">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

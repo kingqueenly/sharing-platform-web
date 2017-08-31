@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <section class="panel">
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-inbox table-hover">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>Subject</th>
+              <th>Stage</th>
+              <th>Phase</th>
+              <th>Create time</th>
+              <th>operation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let usecase of usecaseList.list; let i = index" >
+              <th scope="row">{{i+1}}</th>
+              <td><span class="title">{{usecase.subject}}</span></td>
+              <td>{{usecase.stage}}</td>
+              <td>{{usecase.phase}}</td>
+              <td>{{usecase.createTime}}</td>
+              <td>
+                <button class="btn btn-default btn-xs tooltips" data-original-title="Trash" data-toggle="tooltip"
+                        [routerLink]="['../edit', usecase.id]" >
+                  <i class="fa fa-trash-o"></i> Update
+                </button>
+                <button class="btn btn-default btn-xs tooltips" data-original-title="Trash" data-toggle="tooltip"
+                        (click)="deleteUsecase(usecase)" >
+                  <i class="fa fa-trash-o"></i> Delete
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <a class="btn btn-default btn-block show-more" (click)="showMore();" *ngIf="usecaseList.hasNextPage">
+      <span>Show more </span>
+      <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </a>
+  </div>
+</div>

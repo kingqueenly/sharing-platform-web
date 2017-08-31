@@ -1,0 +1,27 @@
+<p *ngIf="pagedList.total > 0">{{pagedList.total}} case results</p>
+<p *ngIf="pagedList.total <= 0"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: #F0AD4E;"></i>&nbsp;We
+    couldn’t find any cases matching your search
+</p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel search-case-list common" *ngFor="let case of pagedList.list"
+             [routerLink]="['/case/detail', case.id]"
+             [class.red]="valueType=='Increase Business Revenue'"
+             [class.blue]="valueType=='Optimize Business Efficiency'"
+             [class.yellow]="valueType=='Provide Best Customer Experience'">
+            <div class="panel-body">
+                <h1 class="text-ellipsis">{{case.subject}}</h1>
+                <p>
+                    <i class="fa fa-clock-o"></i>
+                    <small>{{case.createTime|amDateFormat:'YYYY-MM-DD HH:mm'}}</small>
+                </p>
+                <p>
+                    <span>Objective</span>
+                    <span>{{case.vtext}}</span>
+                </p>
+                <span>Description</span>
+                <p class="use_case_des_p text-ellipsis">{{case.scenario}}</p>
+            </div>
+        </div>
+    </div>
+</div>

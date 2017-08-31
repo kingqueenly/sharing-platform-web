@@ -1,0 +1,8 @@
+<div class="fileuploadzone" >
+  <img [src]="userSrc.url==null || userSrc.url=='' || userSrc.url==undefined ? 'assets/header.png':filePath+userSrc.url" class="media-object img-circle">
+  <p class="single-p1">Replace</p>
+  <p class="single-p2">Photo</p>
+  <input  type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
+  <p class="single-p3">Only jpg,png Max-size 100K</p>
+</div>
+

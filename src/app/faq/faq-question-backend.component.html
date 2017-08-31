@@ -1,0 +1,37 @@
+<p class="content-page-title">Feedback</p>
+
+<table class="table table-inbox table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Question</th>
+        <th>Created Time</th>
+        <th class="text-center">Replied</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let question of pagedList.list; let i = index">
+        <th>{{i+1}}</th>
+        <td>{{question.question}}</td>
+        <td>{{question.createTime}}</td>
+        <td class="text-center">
+            <i *ngIf="question.answer != undefined" class="fa fa-check-circle" style="color: green;" aria-hidden="true"></i>
+        </td>
+        <td>
+            <button class="btn btn-default btn-xs" [routerLink]="['detail',question.id]">
+                <i class="fa fa-eye"></i>View
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <a class="btn btn-default btn-block show-more" (click)="showMore();" *ngIf="pagedList.hasNextPage">
+            <span>Show more </span>
+            <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>
+<br>

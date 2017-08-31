@@ -1,0 +1,64 @@
+<p class="content-page-title">Data Governance Committee</p>
+<div class="dg-wraper" *ngIf="showPrinciples">
+  <p>The Data Governance Committee for the Data Lake (China) is established as of May 1, 2017.</p>
+  <p>Composition: Membership shall be as follows: 3 representatives from IL (2 with legal expertise and 1 with compliance expertise), 1 from IT Security, 1 from Finance & Controlling and 2 Data Scientists. Current members are Dawn Beck and Fei Xu from legal; Yue Sun from Compliance; Naile Salih from IT Security; Ning Zhai from Finance & Controlling; and Susanne Gildehaus and Wanjun Chen the Data Scientists.</p>
+  <p>Meetings: As needed.</p>
+  <p style="margin: 0;">Tasks:</p>
+  <ul class="ul-disc">
+    <li>Review Use Requests;</li>
+    <li>Make decisions when there are grey areas;</li>
+    <li>Update Daimler China Data Lake Governance and Ethics Principles as needed;</li>
+    <li>Research issues related to good industry practices, Daimler policies and legal changes;</li>
+    <li>Update Stocktaking and Use Case forms as needed;</li>
+    <li>Ensure that adequate trainings measures are implemented (e.g. for data scientists or other personnel with exposure to potentially sensitive data);</li>
+    <li>Ensure that Daimler China Data Lake Governance and Ethics Principles are properly communicated;</li>
+    <li>Update responsibilities once we have an automated decision tree;</li>
+    <li>Align as much as possible with other regions on Data Lake topics and keep other regions informed of progress; and</li>
+    <li>Report as needed to appropriate management committees.</li>
+  </ul>
+  <div class="principles" (scroll)="ifScrollBottom(this)">
+    <h1 class="text-center">Daimler China Data Lake Governance and Ethics Principles</h1>
+    <h2>Part I Definition:</h2>
+    <ul class="ul-nostyle">
+      <li>“Information Owner” refers to the Daimler entity which owns the data.</li>
+      <li>“China Data Lake” refers to the DGRC owned, compliant and secure data platform that stores all relevant internal and external data sources. It offers centralized user authentication and authorization for Data Scientists to view, connect and analyze the data for gaining insights and prepare customized data applications.</li>
+      <li>“Customer/Subject” refers to the individual or corporate who has provided the information to the Information Owner.</li>
+      <li>“Daimler Affiliate” refers to an entity in which Daimler AG holds shares, either directly or indirectly.</li>
+      <li>“Personal Data” refers to all kinds of data recorded by whatever means which may be used to identify a specific person separately or combined with other information.</li>
+    </ul>
+    <h2>Before inputting data into the Data Lake or analyzing or using data in the Data Lake, the following principles should be complied with:</h2>
+    <h2>Part II Overall Principles</h2>
+    <ol>
+      <li>Do not collect data for the sake of collecting data.</li>
+      <li>The Data Lake must physically reside in China. Data from the Data Lake cannot be transferred out of China unless the Information Request Form is signed by all required parties or the transfer is approved by DGRC legal has approved the transfer outside of China.</li>
+      <li>The collection, use, archiving and reuse of the data must comply with applicable laws and Daimler policies (such as Data Protection, IT Security, etc.).</li>
+      <li>If the data becomes public, no harm or reputational risk should result from such disclosure.</li>
+      <li>The use of the data must not create an unintended discriminatory impact.</li>
+      <li>If data results resulting from usage of data in the Data Lake are used for another use, all of these principles herein must be followed.</li>
+      <li>Any questions should be referred to Data Governance Committee.</li>
+    </ol>
+    <h2>Part III Data Processing</h2>
+    <ol>
+      <li>The consent obtained from the Customer must be sufficient for the proposed use and regular review by the information owner / responsible data analyst must be conducted to ensure continued use of the data for the proposed use or proposed reuse.</li>
+      <li>The data must be collected for a justified business purpose and with legitimate methods.</li>
+      <li>For purchased data, the Information Owner is responsible for determining that the data has been properly obtained by the seller and is accurate and is able to be transferred and/or used in the manner contemplated.</li>
+      <li>Information Owner shall confirm data accuracy before injecting into the lake.</li>
+      <li>Stocktaking Form and Information Request Form must be completed, analyzed and approved by all required approvers on Information Request Form.</li>
+      <li>The Information Owner should approve the transfer and use of the data by any third party. Where Information Owner refuses to grant such approval and it is legally permissible to transfer and use such data, then Data Governance Committee shall make the final decision.</li>
+      <li>If the data has been flagged with a “Risk” flag, then the Data Governance Committee must review and approve the transfer and use of such data.</li>
+    </ol>
+    <h2>Part IV Data Consumption</h2>
+    <ol>
+      <li>Data obtained from Customers should in principle be used to generate additional benefits for Customers.</li>
+      <li>If a reasonable person residing in China would be offended by the way the data is being used, then do not use the data in the proposed use.</li>
+      <li>Unless otherwise approved by the Data Governance Committee, any Personal Data that is shared with another Daimler Affiliate (other than the Information Owner) must be anonymized and aggregated. The anonymization must be sufficient so that the identity of the person concerned is not able to be discovered.</li>
+      <li>Data within the Data Lake shall be reviewed by the Information Owner every 2 years to determine if it should be retained. It will be destroyed after 2 years if there is no affirmative action to retain such data.</li>
+    </ol>
+    <h2>This Principle shall be well known to the Information Owner, data scientist, data analyst and any other company employees who handle the data and/or have requests to use the data.</h2>
+  </div>
+  <div>
+    <button type="button" class="btn btn-default" [routerLink]="['/datagovernance/policy/application']" routerLinkActive="active">Yes, I Agree</button>
+  </div>
+  <p class="margin-bottom-0 note">If you have any question, please contact <a [routerLink]="['/user/detail',932]" href="javascript:void(0);">Ms. Beck, Dawn M.</a> for detail information.</p>
+</div>
+<br/>

@@ -1,0 +1,34 @@
+<div>
+  <div class="dashboard-user-level" [ngStyle]="{'background-position-y': userLevelIcon}"></div>
+  <table class="table-condensed user-level">
+    <tr class="current-level">
+      <td colspan="4">{{level}}</td>
+      <td class="lastLevel">{{nextLevel}}</td>
+    </tr>
+    <tr>
+      <td colspan="5">
+        <div class="progress">
+          <div class="progress-bar" [ngStyle]="{'width': widthProgress}"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td  colspan="5">
+        <div class="user-level-show">
+          <span class="triangle-up"></span>
+          <div>
+            <p *ngFor="let level of levelRule">
+              <label>{{level.name}}:</label>
+              <span *ngIf="level.maxScore==null">More Than {{level.minScore}}</span>
+              <span *ngIf="level.maxScore!=null">{{level.minScore}}-{{level.maxScore}}</span>
+            </p>
+            <div class="level-note"><i>*Free credits until Sept. 2017!<br>Coming soon for detail Credit Policy.Accumulate credits via contribution on platform and enjoy more functions.</i></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+

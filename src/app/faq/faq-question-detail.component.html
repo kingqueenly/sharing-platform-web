@@ -1,0 +1,25 @@
+<p class="content-page-title">Question Detail</p>
+<div class="dg-wraper">
+    <div>
+        <h2 class="margin-top-0">Created Time</h2>
+        <p>{{question.createTime}}</p>
+    </div>
+    <div>
+        <h2>Question</h2>
+        <p>{{question.question}}</p>
+    </div>
+    <div *ngIf="!showReplyBlock && question.answer != undefined">
+        <h2>Answer</h2>
+        <p>{{question.answer}}</p>
+    </div>
+    <p *ngIf="!showReplyBlock && question.answer != undefined">Is this answer useful for you? <a href="javascript:void(0)" (click)="markYes()" [class.selected]="isUseful != null && isUseful">Yes</a>, <a href="javascript:void(0)" [class.selected]="isUseful != null && !isUseful" (click)="markNo()">No</a></p>
+    <div *ngIf="showReplyBlock">
+        <h2>Reply Here</h2>
+        <form #questionForm="ngForm" (ngSubmit)="submitReply()" id="question-submit-form" class="form-horizontal form-border">
+            <textarea style="resize: vertical;" class="form-control" maxlength="500" name="answer" required [(ngModel)]="question.answer" placeholder="Your answer here"></textarea>
+            <button type="submit" class="btn btn-default" style="margin-top: 10px;" [disabled]="!questionForm.form.valid">Submit</button>
+            <!--{{question.answer.length}}/500-->
+        </form>
+    </div>
+</div>
+<br>

@@ -1,0 +1,53 @@
+.fileuploadzone {
+  padding: 12px;
+}
+
+.fileuploadzone .progress {
+  margin-left: 12px;
+  margin-right: 12px;
+  height: auto;
+  opacity: 0.5;
+  -moz-opacity: 0.5;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.drop-zone {
+  padding-bottom: 20px;
+  border: 3px dotted lightgray;
+  position: relative;
+  margin-bottom: 0;
+}
+
+.nv-file-over {
+  border: 3px dotted red;
+}
+
+/*.thumb {*/
+/*width: 120px;*/
+/*height: 80px;*/
+
+/*}*/
+.thumb a {
+  position: absolute;
+  top: -7px;
+  left: 109px;
+}
+
+.upload-input-file{
+  position:absolute;
+  right:0;
+  top:0;
+  font-size:100px;
+  opacity:0;
+  filter:alpha(opacity=0);
+  cursor:pointer;
+}
+
+.file-item{
+  margin-top: 10px;
+}

@@ -1,0 +1,603 @@
+<form class="application" #applicationForm="ngForm">
+    <div class="row content-page-heading border-bottom-0">
+        <div class="col-md-7 heading-text">Data Usage Application</div>
+        <div class="col-md-5 padding-right-0">
+            <div style="float: right;">
+                <a href="javascript:void(0);" *ngIf="taskId!=null" class="dg-link tracking" (click)="trackingModal.open()">Tracking</a>
+                <button *ngFor="let btn of flowButtons" (click)="executeFlowProcess(btn.buttonName)" type="submit" class="btn btn-primary btn-recommand" [disabled]="!applicationForm.form.valid || !isApplicationValid()">
+                    {{btn.buttonName}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <modal #commentsModal modalClass="modal-comments" [hideCloseButton]="true">
+        <modal-header>
+            Please input your comments
+        </modal-header>
+        <modal-content>
+            <div>
+                <h1>How will the requested data be used</h1>
+                <p>{{application.howDataUse}}</p>
+                <h1>Comments</h1>
+                <textarea class="form-control" id="comments" name="comments" [(ngModel)]="flowCommand.comments"></textarea>
+            </div>
+        </modal-content>
+        <modal-footer>
+            <button class="btn btn-primary btn-recommand" [disabled]="!applicationForm.form.valid || !isApplicationValid()" (click)="submitFlowProcess(clickedButton)">Submit</button>
+            <button class="btn btn-primary btn-recommand" (click)="commentsModal.close()">Close</button>
+        </modal-footer>
+    </modal>
+    <modal #trackingModal modalClass="modal-lg modal-comments" [hideCloseButton]="true">
+        <modal-header>
+            Tracking
+        </modal-header>
+        <modal-content>
+            <table class="table table-sp margin-bottom-0">
+                <thead>
+                <tr>
+                    <th>Step</th>
+                    <th>Process By</th>
+                    <th>Comments</th>
+                    <th>Operation</th>
+                    <th>Created Time</th>
+                    <th>Completed Time</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let tk of tracking">
+                    <td>{{tk.taskKey}}</td>
+                    <td>{{tk.userId}}</td>
+                    <td>{{tk.comments}}</td>
+                    <td>{{tk.buttonName}}</td>
+                    <td>{{tk.createTime | date: "yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{tk.updateTime | date: "yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{tk.status}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </modal-content>
+        <modal-footer>
+            <button class="btn btn-primary btn-recommand" (click)="trackingModal.close()">Close</button>
+        </modal-footer>
+    </modal>
+    <div class="content-page-body">
+        <div class="form-group-item">
+            <div class="form-group" *ngIf="stepKey=='form-filling'">
+                <label class="control-label">Your supervisor(User Id)</label>
+                <input type="text" class="form-control" required  name="supervisor" [(ngModel)]="flowCommand.supervisor">
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #systemNameSection hidden>
+                <label class="control-label">System Name</label>
+                <ng-select [multiple]=true [items]="systemNamesSimple"
+                           placeholder="Please select" disabled="true"
+                           [active]="prevApplication.systemNames">
+                </ng-select>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">System Name</label>
+                <i (click)="systemNameSection.hidden = !systemNameSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <ng-select #systemNameSelect [multiple]=true [items]="systemNamesSimple"
+                           placeholder="Please select" id="systemName"
+                           (data)="refreshSystemNames($event)"
+                           [disabled]="form_readonly"
+                           [active]="application.systemNames">
+                </ng-select>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #dataTypeSection hidden>
+                <label class="control-label">Describe Data Types(Multiple choices)(Optional)</label>
+                <ng-select [multiple]=true [items]="dataTypes" placeholder="Please select" disabled="true"
+                           [active]="prevApplication.dataTypes">
+                </ng-select>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Describe Data Types(Multiple choices)(Optional)</label>
+                <i (click)="dataTypeSection.hidden = !dataTypeSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <ng-select [multiple]=true [items]="dataTypes" placeholder="Please select" id="dataType"
+                           (data)="refreshDataTypes($event)"
+                           [disabled]="form_readonly"
+                           [active]="application.dataTypes">
+                </ng-select>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #dataObtainedSection hidden>
+                <label for="dataObtained" class="control-label">List the Data Obtained</label>
+                <textarea class="form-control" disabled="true"
+                          >{{prevApplication.dataObtained}}</textarea>
+                <p class="simple-checkbox">
+                    Whether the data listed can be tracked by Daimler to a certain person?
+                    <span><input disabled="true" type="checkbox" [checked]="prevApplication.canTrack"/>Yes</span>
+                    <span><input disabled="true" type="checkbox" [checked]="!prevApplication.canTrack"/>No</span>
+                </p>
+            </div>
+            <div class="form-group current">
+                <label for="dataObtained" class="control-label">List the Data Obtained</label>
+                <i (click)="dataObtainedSection.hidden = !dataObtainedSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <textarea class="form-control" required id="dataObtained" name="dataObtained" [disabled]="form_readonly"
+                          [(ngModel)]="application.dataObtained"></textarea>
+                <p class="simple-checkbox">
+                    Whether the data listed can be tracked by Daimler to a certain person?
+                    <span (click)="changeCanTrack(true)">
+                        <input type="checkbox" (click)="changeCanTrack(false)" [disabled]="form_readonly"
+                                                                [checked]="application.canTrack"/>Yes</span>
+                    <span (click)="changeCanTrack(false)">
+                        <input type="checkbox" (click)="changeCanTrack(true)" [disabled]="form_readonly"
+                                                                 [checked]="!application.canTrack"/>No</span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #informationClassificationSection hidden>
+                <label class="control-label">Information Classification(applicable to personal data)</label>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.customerConsentObtained"/>
+                        Customer consent obtained?
+                    </span>
+                </p>
+                <p *ngIf="prevApplication.customerConsentObtained">
+                    If yes, please insert the terms which used to collect the customer consent (purpose of use, scope of
+                    use, methods of exchange, methods of collection, etc.):
+                    <input type="text" class="form-control" disabled="true" value="{{prevApplication.consentTerm}}">
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.anonymous"/>
+                        Anonymous
+                    </span>
+                    <span>
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.aggregated"/>
+                        Aggregated
+                    </span>
+                </p>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Information Classification(applicable to personal data)</label>
+                <i (click)="informationClassificationSection.hidden = !informationClassificationSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeCustomerConsentObtained()">
+                        <input type="checkbox" [checked]="application.customerConsentObtained" [disabled]="form_readonly"/>
+                        Customer consent obtained?
+                    </span>
+                </p>
+                <p *ngIf="application.customerConsentObtained">
+                    If yes, please insert the terms which used to collect the customer consent (purpose of use, scope of
+                    use, methods of exchange, methods of collection, etc.):
+                    <input type="text" class="form-control" required name="consentTerm" [disabled]="form_readonly"
+                           [(ngModel)]="application.consentTerm">
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeAnonymous()">
+                        <input type="checkbox" [checked]="application.anonymous" [disabled]="form_readonly"/>
+                        Anonymous
+                    </span>
+                    <span (click)="changeAggregated()">
+                        <input type="checkbox" [checked]="application.aggregated" [disabled]="form_readonly"/>
+                        Aggregated
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #systemLocationsSection hidden>
+                <label class="control-label">Where is System (Server) Located ?</label>
+                <ng-select [multiple]=true [items]="systemLocations" placeholder="Please select" disabled="true"
+                           [active]="prevApplication.systemLocations">
+                </ng-select>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Where is System (Server) Located ?</label>
+                <i (click)="systemLocationsSection.hidden = !systemLocationsSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <ng-select #systemLocationSelect [multiple]=true [items]="systemLocations" placeholder="Please select"
+                           id="systemLocation" [disabled]="form_readonly"
+                           (data)="refreshSystemLocations($event)"
+                           [active]="application.systemLocations">
+                </ng-select>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #useOfDataSection hidden>
+                <label for="useOfData" class="control-label">Current Use of Data</label>
+                <textarea class="form-control" disabled="true">{{prevApplication.useOfData}}</textarea>
+            </div>
+            <div class="form-group current">
+                <label for="useOfData" class="control-label">Current Use of Data</label>
+                <i (click)="useOfDataSection.hidden = !useOfDataSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <textarea class="form-control" name="useOfData" id="useOfData" required [disabled]="form_readonly"
+                          [(ngModel)]="application.useOfData"></textarea>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #typeOfInformationSection hidden>
+                <label class="control-label">Type of information requested(check all that apply)</label>
+                <p class="simple-checkbox">
+                    Involving personal data?
+                    <span><input type="checkbox" disabled="true" [checked]="prevApplication.ipd"/>Yes</span>
+                    <span><input type="checkbox" disabled="true" [checked]="!prevApplication.ipd"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    Involving company data?
+                    <span><input type="checkbox" disabled="true" [checked]="prevApplication.icd"/>Yes</span>
+                    <span><input type="checkbox" disabled="true" [checked]="!prevApplication.icd"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    Will the requested data be anonymized or aggregated prior to receipt?
+                    <span><input type="checkbox" disabled="true" [checked]="prevApplication.aaptr"/>Yes</span>
+                    <span><input type="checkbox" disabled="true" [checked]="!prevApplication.aaptr"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    Will the requested data be anonymized or aggregated after receipt?
+                    <span><input type="checkbox" disabled="true" [checked]="prevApplication.aaar"/>Yes</span>
+                    <span><input type="checkbox" disabled="true" [checked]="!prevApplication.aaar"/>No</span>
+                </p>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Type of information requested(check all that apply)</label>
+                <i (click)="typeOfInformationSection.hidden = !typeOfInformationSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <p class="simple-checkbox">
+                    Involving personal data?
+                    <span (click)="changeIPD(true)"><input type="checkbox" (click)="changeIPD(false)" [disabled]="form_readonly"
+                                                           [checked]="application.ipd"/>Yes</span>
+                    <span (click)="changeIPD(false)"><input type="checkbox" (click)="changeIPD(true)" [disabled]="form_readonly"
+                                                            [checked]="!application.ipd"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    Involving company data?
+                    <span (click)="changeICD(true)"><input type="checkbox" (click)="changeICD(false)" [disabled]="form_readonly"
+                                                           [checked]="application.icd"/>Yes</span>
+                    <span (click)="changeICD(false)"><input type="checkbox" (click)="changeICD(true)" [disabled]="form_readonly"
+                                                            [checked]="!application.icd"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    Will the requested data be anonymized or aggregated prior to receipt?
+                    <span (click)="changeAAPTR(true)"><input type="checkbox" (click)="changeAAPTR(false)" [disabled]="form_readonly"
+                                                             [checked]="application.aaptr"/>Yes</span>
+                    <span (click)="changeAAPTR(false)"><input type="checkbox" (click)="changeAAPTR(true)" [disabled]="form_readonly"
+                                                              [checked]="!application.aaptr"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    Will the requested data be anonymized or aggregated after receipt?
+                    <span (click)="changeAAAR(true)"><input type="checkbox" (click)="changeAAAR(false)" [disabled]="form_readonly"
+                                                            [checked]="application.aaar"/>Yes</span>
+                    <span (click)="changeAAAR(false)"><input type="checkbox" (click)="changeAAAR(true)" [disabled]="form_readonly"
+                                                             [checked]="!application.aaar"/>No</span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #whoOwnDataSection hidden>
+                <label class="control-label">Who owns the data requested?(Legal Entity)</label>
+                <table class="table table-sp">
+                    <thead>
+                    <tr>
+                        <th>System</th>
+                        <th>Entity</th>
+                        <th>Function</th>
+                        <th>Contack Person</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let s of prevSelectedSystemNames">
+                        <td>{{s.text}}</td>
+                        <td>{{s.entityName}}</td>
+                        <td>{{s.functionName}}</td>
+                        <td>{{s.dataOwner}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="simple-checkbox">
+                    Will you provide the data owner with the results from your use of the data？
+                    <span><input type="checkbox" disabled="true" [checked]="prevApplication.rfyud"/>Yes</span>
+                    <span><input type="checkbox" disabled="true" [checked]="!prevApplication.rfyud"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    will you provide any type of compensation to the data owner for use of the data? If so, describe
+                    details？
+                    <span><input type="checkbox" disabled="true" [checked]="prevApplication.atoc"/>Yes</span>
+                    <span><input type="checkbox" disabled="true" [checked]="!prevApplication.atoc"/>No</span>
+                    <textarea *ngIf="prevApplication.atoc" disabled="true" class="form-control">{{prevApplication.atocDsec}}</textarea>
+                </p>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Who owns the data requested?(Legal Entity)</label>
+                <i (click)="whoOwnDataSection.hidden = !whoOwnDataSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <table class="table table-sp">
+                    <thead>
+                    <tr>
+                        <th>System</th>
+                        <th>Entity</th>
+                        <th>Function</th>
+                        <th>Contack Person</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let s of selectedSystemNames">
+                        <td>{{s.text}}</td>
+                        <td>{{s.entityName}}</td>
+                        <td>{{s.functionName}}</td>
+                        <td>{{s.dataOwner}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="simple-checkbox">
+                    Will you provide the data owner with the results from your use of the data？
+                    <span (click)="changeRfyud(true)"><input type="checkbox" (click)="changeRfyud(false)" [disabled]="form_readonly"
+                                                             [checked]="application.rfyud"/>Yes</span>
+                    <span (click)="changeRfyud(false)"><input type="checkbox" (click)="changeRfyud(true)" [disabled]="form_readonly"
+                                                              [checked]="!application.rfyud"/>No</span>
+                </p>
+                <p class="simple-checkbox">
+                    will you provide any type of compensation to the data owner for use of the data? If so, describe
+                    details？
+                    <span (click)="changeAtoc(true)"><input type="checkbox" (click)="changeAtoc(false)" [disabled]="form_readonly"
+                                                            [checked]="application.atoc"/>Yes</span>
+                    <span (click)="changeAtoc(false)"><input type="checkbox" (click)="changeAtoc(true)" [disabled]="form_readonly"
+                                                             [checked]="!application.atoc"/>No</span>
+                    <textarea *ngIf="application.atoc" required class="form-control" name="atocDsec" id="atocDsec" [disabled]="form_readonly"
+                              [(ngModel)]="application.atocDsec"></textarea>
+                </p>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #descriptionInfoSection hidden>
+                <label for="descOfInfo" class="control-label">Describe the information requested</label>
+                <textarea class="form-control" disabled="true">{{prevApplication.descOfInfo}}</textarea>
+            </div>
+            <div class="form-group current">
+                <label for="descOfInfo" class="control-label">Describe the information requested</label>
+                <i (click)="descriptionInfoSection.hidden = !descriptionInfoSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <textarea class="form-control" name="descOfInfo" required id="descOfInfo" [disabled]="form_readonly"
+                          [(ngModel)]="application.descOfInfo"></textarea>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #howDataUseSection hidden>
+                <label for="howDataUse" class="control-label">How will the requested data be used?</label>
+                <textarea class="form-control" disabled="true">{{prevApplication.howDataUse}}</textarea>
+            </div>
+            <div class="form-group current">
+                <label for="howDataUse" class="control-label">How will the requested data be used?</label>
+                <i (click)="howDataUseSection.hidden = !howDataUseSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <textarea class="form-control" name="howDataUse" id="howDataUse" required [disabled]="form_readonly"
+                          [(ngModel)]="application.howDataUse"></textarea>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #infoSharedSection hidden>
+                <label class="control-label">Will the information be shared with any other party?</label>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.noShare"/>
+                        No, the Information will only be used by Applicant.
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.yesForAffiliate"/>
+                        Yes, the Information will be shared with another Daimler Affiliate(s). If so, which Affiliate(s)
+                    </span>
+                    <input type="text" *ngIf="prevApplication.yesForAffiliate" disabled="true" class="form-control" value="{{prevApplication.sharedAffiliate}}">
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.yesForCustom"/>
+                        Yes, the Information will be shared with
+                    </span>
+                    <input type="text" disabled="true" *ngIf="prevApplication.yesForCustom" class="form-control" value="{{prevApplication.sharedCustom}}">
+                </p>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Will the information be shared with any other party?</label>
+                <i (click)="infoSharedSection.hidden = !infoSharedSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeNoShare()">
+                        <input type="checkbox" [checked]="application.noShare" [disabled]="form_readonly"/>
+                        No, the Information will only be used by Applicant.
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeYesForAffiliate()">
+                        <input type="checkbox" [checked]="application.yesForAffiliate" [disabled]="form_readonly"/>
+                        Yes, the Information will be shared with another Daimler Affiliate(s). If so, which Affiliate(s)
+                    </span>
+                    <input type="text" *ngIf="application.yesForAffiliate" class="form-control" required [disabled]="form_readonly"
+                           name="sharedAffiliate" [(ngModel)]="application.sharedAffiliate">
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeYesForCustom()">
+                        <input type="checkbox" [checked]="application.yesForCustom" [disabled]="form_readonly"/>
+                        Yes, the Information will be shared with
+                    </span>
+                    <input type="text" *ngIf="application.yesForCustom" class="form-control" required name="sharedCustom" [disabled]="form_readonly"
+                           [(ngModel)]="application.sharedCustom">
+                </p>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #indicateDetailSection hidden>
+                <label class="control-label">Indicate details about method to be used to share / transmit data.</label>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.transmitByEmail"/>
+                        Email
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.transmitByPM"/>
+                        Physical Media
+                    </span>
+                    <input type="text" disabled="true" *ngIf="prevApplication.transmitByPM" class="form-control"
+                           value="{{prevApplication.pmTransmitter}}">
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.transmitBySW"/>
+                        System/Website
+                    </span>
+                </p>
+                <p class="simple-checkbox" *ngIf="prevApplication.transmitBySW">
+                    Will be ingested in the data lake by us
+                    <span>
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.ingested"/>
+                        Yes
+                    </span>
+                    <span>
+                        <input type="checkbox" disabled="true" [checked]="!prevApplication.ingested"/>
+                        No
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.transmitByOther"/>
+                        Other
+                    </span>
+                    <input type="text" disabled="true" *ngIf="prevApplication.transmitByOther" class="form-control"
+                           value="{{prevApplication.otherTransmitter}}">
+                </p>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Indicate details about method to be used to share / transmit data.</label>
+                <i (click)="indicateDetailSection.hidden = !indicateDetailSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeTransmitByEmail()">
+                        <input type="checkbox" [checked]="application.transmitByEmail" [disabled]="form_readonly"/>
+                        Email
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeTransmitByPM()">
+                        <input type="checkbox" [checked]="application.transmitByPM" [disabled]="form_readonly"/>
+                        Physical Media
+                    </span>
+                    <input type="text" *ngIf="application.transmitByPM" class="form-control" required name="pmTransmitter" [disabled]="form_readonly"
+                           [(ngModel)]="application.pmTransmitter">
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeTransmitBySW()">
+                        <input type="checkbox" [checked]="application.transmitBySW" [disabled]="form_readonly"/>
+                        System/Website
+                    </span>
+                </p>
+                <p class="simple-checkbox" *ngIf="application.transmitBySW">
+                    Will be ingested in the data lake by us
+                    <span (click)="changeIngested(true)">
+                        <input type="checkbox" (click)="changeIngested(false)" [disabled]="form_readonly" [checked]="application.ingested"/>
+                        Yes
+                    </span>
+                    <span (click)="changeIngested(false)">
+                        <input type="checkbox" (click)="changeIngested(true)" [disabled]="form_readonly" [checked]="!application.ingested"/>
+                        No
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeTransmitByOther()">
+                        <input type="checkbox" [disabled]="form_readonly" [checked]="application.transmitByOther"/>
+                        Other
+                    </span>
+                    <input type="text" *ngIf="application.transmitByOther" class="form-control" required [disabled]="form_readonly"
+                           name="otherTransmitter" [(ngModel)]="application.otherTransmitter">
+                </p>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #indicateSecuritySection hidden>
+                <label class="control-label">Indicate details about security controls to safeguard the information.</label>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.securityWithEncryption"/>
+                        Encryption
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.securityWithSecureTransport"/>
+                        Secure Transport
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0">
+                        <input type="checkbox" disabled="true" [checked]="prevApplication.securityWithOther"/>
+                        Other
+                    </span>
+                    <input type="text" disabled="true" *ngIf="prevApplication.securityWithOther" class="form-control"
+                           value="{{prevApplication.otherSecurity}}">
+                </p>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Indicate details about security controls to safeguard the information.</label>
+                <i (click)="indicateSecuritySection.hidden = !indicateSecuritySection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeSecurityWithEncryption()">
+                        <input type="checkbox" [disabled]="form_readonly" [checked]="application.securityWithEncryption"/>
+                        Encryption
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeSecurityWithSecureTransport()">
+                        <input type="checkbox" [disabled]="form_readonly" [checked]="application.securityWithSecureTransport"/>
+                        Secure Transport
+                    </span>
+                </p>
+                <p class="simple-checkbox">
+                    <span class="margin-left-0" (click)="changeSecurityWithOther()">
+                        <input type="checkbox" [disabled]="form_readonly" [checked]="application.securityWithOther"/>
+                        Other
+                    </span>
+                    <input type="text" *ngIf="application.securityWithOther" class="form-control" required [disabled]="form_readonly"
+                           name="otherSecurity" [(ngModel)]="application.otherSecurity">
+                </p>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #howLongRetainedSection hidden>
+                <label class="control-label">How long will data be retained by Applicant?<br>Must be reviewed for further
+                    retention within 2 years or data will not be retained.</label>
+                <textarea class="form-control" disabled="true">{{prevApplication.howLongRetained}}</textarea>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">How long will data be retained by Applicant?
+                    <i (click)="howLongRetainedSection.hidden = !howLongRetainedSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                    <br>
+                    Must be reviewed for further retention within 2 years or data will not be retained.</label>
+                <textarea class="form-control" name="howLongRetained" id="howLongRetained" required [disabled]="form_readonly"
+                          [(ngModel)]="application.howLongRetained"></textarea>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group previous" #addInfoSection hidden>
+                <label class="control-label">Additional Information<br>Provide any additional applicable information about
+                    the information requested</label>
+                <textarea class="form-control" disabled="true">{{prevApplication.additionalInfo}}</textarea>
+            </div>
+            <div class="form-group current">
+                <label class="control-label">Additional Information
+                    <i (click)="addInfoSection.hidden = !addInfoSection.hidden" *ngIf="checkPreIconDisplay" class="fa fa-external-link previous-icon" aria-hidden="true"></i>
+                    <br>Provide any additional applicable information about
+                    the information requested</label>
+                <textarea class="form-control" name="additionalInfo" id="additionalInfo" [disabled]="form_readonly"
+                          [(ngModel)]="application.additionalInfo"></textarea>
+            </div>
+        </div>
+        <div class="form-group-item">
+            <div class="form-group current">
+                <ul style="padding-left: 15px;">
+                    <li>Definition of personal data : Personal data is all information about certain or definable natural
+                        persons. A person is definable for instance if the personal relationship can be determined using a
+                        combination of information with even incidental additional knowledge.
+                    </li>
+                    <li>Definition of company confidentiality : Unauthorized disclosure would have significant negative
+                        impact on Daimler, its stockholders, business partners or employees. Unauthorized disclosure may
+                        even violate laws or regulations. Access is always restricted based on a “need to know”.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>
+<br>

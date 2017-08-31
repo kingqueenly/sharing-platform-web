@@ -1,0 +1,60 @@
+.fileuploadzone {
+  padding: 12px;
+  position: relative;
+}
+
+.fileuploadzone .progress {
+  margin-left: 12px;
+  margin-right: 12px;
+  height: auto;
+  opacity: 0.5;
+  -moz-opacity: 0.5;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.drop-zone {
+  padding-bottom: 20px;
+  border: 3px dotted lightgray;
+  position: relative;
+  margin-bottom: 0;
+}
+
+.nv-file-over {
+  border: 3px dotted red;
+}
+
+
+
+.fileuploadzone .single-p1, .fileuploadzone .single-p2 {
+  font-size: 20px;
+  color: #fff;
+}
+.fileuploadzone .single-p1 {
+  left: 27px;
+  top: 40px;
+  position: absolute;
+}
+
+.fileuploadzone .single-p2 {
+  left: 37px;
+  top: 70px;
+  position: absolute;
+}
+
+.fileuploadzone .single-p3{
+  margin-left: 7px;
+}
+.fileuploadzone input {
+  position: absolute;
+  left: 12px;
+  top: 22px;
+  width: 100px;
+  height: 100px;
+  font-size: 100%;
+  opacity: 0;
+}

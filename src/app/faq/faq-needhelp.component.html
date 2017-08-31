@@ -1,0 +1,30 @@
+<p class="content-page-title">FAQ</p>
+<div class="dg-wraper">
+    <form #questionForm="ngForm" [formGroup]="customForm" (ngSubmit)="submitQuestion()" id="question-submit-form" class="form-horizontal form-border">
+        <textarea style="resize: vertical;" class="form-control" formControlName="question" maxlength="500" name="question" required [(ngModel)]="question.question" placeholder="Your question descriped here"></textarea>
+        <button type="submit" class="btn btn-default" style="margin-top: 10px;" [disabled]="!questionForm.form.valid">{{submitBtnText}}</button>
+        {{question.question.length}}/500
+    </form>
+    <p *ngIf="success"><i class="fa fa-exclamation-circle" style="color: green;" aria-hidden="true"></i>&nbsp;Your question has been submitted, Administrator will reply you as soon as possible, You can find your questions submitted at your <a href="javascript:void(0)" [routerLink]="['/faq/my']">My questions</a></p>
+    <h1 class="margin-top-0">Data Use Case Support</h1>
+    <ul class="ul-disc">
+        <li><a href="javascript:void(0)" [routerLink]="['/user/detail/918']">Ms. Yang Feng</a></li>
+        <li><a href="javascript:void(0)" [routerLink]="['/user/detail/924']">Mr. Zhang Meng</a></li>
+        <li><a href="javascript:void(0)" [routerLink]="['/user/detail/916']">Ms. Sun Minghui</a></li>
+        <li><a href="javascript:void(0)" [routerLink]="['/user/detail/1421']">Ms. Chen Wanjun</a></li>
+    </ul>
+    
+    <h1>System Technical Support</h1>
+    <ul class="ul-disc">
+        <li><a href="javascript:void(0)" [routerLink]="['/user/detail/1436']">Mr. Chen Miao</a></li>
+        <li><a href="javascript:void(0)" [routerLink]="['/user/detail/760']">Mr. Cheng Dongshu</a></li>
+    </ul>
+    
+    <h1>Data Community Support</h1>
+    <ul class="ul-disc">
+        <li><a href="javascript:void(0)" [routerLink]="['/user/detail/1425']">Mr. Gemmecker Timo</a></li>
+    </ul>
+    <br>
+    <p><i class="fa fa-coffee" aria-hidden="true"></i>&nbsp;If you cannot find answer or you have any suggestions, please send to public email: <a href="mailto:usecase_sharing_platform@daimler.com">usecase_sharing_platform@daimler.com</a></p>
+</div>
+<br>

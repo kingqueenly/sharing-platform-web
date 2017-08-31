@@ -1,0 +1,24 @@
+.dashboard-user-level {
+  background-image: url('./assets/level.png');
+  background-repeat: no-repeat;
+  /*position: absolute;*/
+  /*top: 10px;*/
+  /*left: -25px;*/
+  width: 35px;
+  height: 35px;
+}
+
+.lastLevel {
+  text-align: right;
+}
+
+.user-level .current-level{
+  color: #b4b4b4;
+}
+
+.level-note{
+  color: #FFFFFF;
+  font-size: 12px;
+  /*font-family: "CorpoSLigItalic";*/
+}
+

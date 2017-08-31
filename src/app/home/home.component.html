@@ -1,0 +1,175 @@
+<section id="main-wrapper" class="theme-default">
+    <header id="header">
+        <div class="brand">
+            <a class="logo">
+                <i class="icon-layers"></i>
+                <!--<span>Mercedes-Benz</span>-->
+                <img src="assets/logo.png">
+                <!--<img src="assets/MB-star_n_web.svg">-->
+            </a>
+        </div>
+        
+        <ul class="nav navbar-nav navbar-left">
+            <li class="toggle-navigation toggle-left">
+                <button class="sidebar-toggle" (click)="toggleSidebar()">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </li>
+            <li class="hidden-xs hidden-sm">
+                <form #searchForm="ngForm" id="form" name="form">
+                    <input type="text" class="search" placeholder="Search..." required [(ngModel)]="searchInputValue"
+                           name="searchInputValue" style="border-left: none !important;">
+                    <button type="submit" class="btn btn-sm btn-search" [disabled]="!searchForm.form.valid"
+                            (click)="onEnter();">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </li>
+        </ul>
+        
+        <ul class="nav navbar-nav navbar-right">
+            <li class="guideline"><a href="{{filePath}}/Platform_Guideline.pdf"><i
+                class="fa fa-download"></i>&nbsp;<span>Platform Guideline</span></a></li>
+            <li class="dropdown profile hidden-xs">
+                <a href="javascript:void(0);" [routerLink]="['/user/detail',userProfile.id]" routerL
+                   class="dropdown-toggle"
+                   data-toggle="dropdown">
+          <span class="meta">
+            <span class="avatar">
+              <img *ngIf="userProfile.imgUrl!=null && userProfile.imgUrl!=''" [(src)]="filePath+userProfile.imgUrl"
+                   class="img-circle" alt="">
+               <img *ngIf="userProfile.imgUrl==null || userProfile.imgUrl==''" src="assets/header.png"
+                    class="img-circle" alt="">
+            </span>
+            <span class="text">{{userProfile.username}}</span>
+            <span class="caret"></span>
+          </span>
+                </a>
+                <ul class="dropdown-menu animated fadeInRight" role="menu">
+                    <li>
+                        <a href="javascript:void(0);" [routerLink]="['/user/detail',userProfile.id]"><span class="icon"><i
+                            class="fa fa-user"></i></span>My Account</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" (click)="logOut();"><span class="icon"><i
+                            class="fa fa-sign-out"></i></span>Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </header>
+    
+    <div class="sidebar sidebar-left sidebar-scroll-y" [ngStyle]="sidebarStyle">
+        
+        <accordion class="accordion" [expandAll]="false" closeOthers="true">
+            
+            <accordion-group>
+                <accordion-heading>
+                    <a [routerLink]="['/home']" routerLinkActive="active">
+                        <i class="fa fa-fw fa-home"></i> Home
+                    </a>
+                </accordion-heading>
+            </accordion-group>
+            
+            <accordion-group>
+                <accordion-heading>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-fw fa-navicon"></i> Use Case Sharing
+                    </a>
+                </accordion-heading>
+                <a href="javascript:void(0)" [routerLink]="['/case/create']" routerLinkActive="active">
+                    Create New Use Case
+                </a>
+                <a href="javascript:void(0)" (click)="toggleObjective()"
+                   [routerLink]="['/case/search','All','All','All','All']">
+                    By All Use Case Objective <i style="margin-top:3px;" [class.fa-caret-down]="!showObjective"
+                                                 [class.fa-caret-up]="showObjective" class="pull-right fa"></i>
+                </a>
+                <div *ngIf="showObjective">
+                    <a href="javascript:void(0)" *ngFor="let value of valueList.list"
+                       [routerLink]="['/case/search',value.text,'All','All','All']" routerLinkActive="active">
+                        {{value.text}}
+                    </a>
+                </div>
+                <a href="javascript:void(0)" (click)="toggleCompany()"
+                   [routerLink]="['/case/search','All','All','All','All']">
+                    By All Company <i style="margin-top:3px;" [class.fa-caret-down]="!showCompany"
+                                      [class.fa-caret-up]="showCompany" class="pull-right fa"></i>
+                </a>
+                <div *ngIf="showCompany">
+                    <a href="javascript:void(0)" *ngFor="let c of companyListHome"
+                       [routerLink]="['/case/search','All',c,'All','All']" routerLinkActive="active">
+                        {{c}}
+                    </a>
+                </div>
+            </accordion-group>
+            
+            <accordion-group>
+                <accordion-heading>
+                    <a href="javascript:void(0)" [routerLink]="['/user/community']" routerLinkActive="active">
+                        <i class="fa fa-fw fa-navicon"></i> WiW (Data Community)
+                    </a>
+                </accordion-heading>
+            </accordion-group>
+            
+            <accordion-group>
+                <accordion-heading>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-fw fa-navicon"></i> Data Governance
+                    </a>
+                </accordion-heading>
+                <a [routerLink]="['/datagovernance/policy']" routerLinkActive="active">
+                    Data Usage Application
+                </a>
+                <a [routerLink]="['/datagovernance/myapplication']" routerLinkActive="active">
+                    My Application
+                </a>
+                <a [routerLink]="['/datagovernance/mytask']" routerLinkActive="active">
+                    My Task
+                </a>
+            </accordion-group>
+            
+            <accordion-group>
+                <accordion-heading>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-fw fa-navicon"></i> Hot Links
+                    </a>
+                </accordion-heading>
+                <a href="https://bi-portal-cn.i.daimler.com/" target="_blank">OSR</a>
+                <a href="https://team.apac.sp.wp.corpintra.net/sites/04217/WebPages/PortalHomePage.html"
+                   target="_blank">China OneSite</a>
+                <a href="https://portal.e.corpintra.net/wps/myportal" target="_blank">Who is Who</a>
+                <a href="https://team.apac.sp.wp.corpintra.net/sites/04104/MercedesWE/SitePages/Home.aspx"
+                   target="_blank">We@Mercedes</a>
+                <a href="http://www.mercedes-benz.com.cn/content/china/mpc/mpc_china_website/zhng/home_mpc/passengercars.html"
+                   target="_blank">Mercedes-Benz China</a>
+            </accordion-group>
+            
+            <accordion-group>
+                <accordion-heading>
+                    <a href="javascript:void(0)"><i class="fa fa-fw fa-navicon"></i> FAQ</a>
+                </accordion-heading>
+                <a href="javascript:void(0)"
+                   [routerLink]="['/faq/needhelp']" routerLinkActive="active">
+                    Need Help
+                </a>
+                <a href="javascript:void(0)"
+                   [routerLink]="['/faq/myquestion']" routerLinkActive="active">
+                    My questions
+                </a>
+            </accordion-group>
+        </accordion>
+
+    </div>
+    
+    <section class="main-content-wrapper" [ngStyle]="mainContentStyle">
+        <section id="main-content">
+            <page-transition>
+                <router-outlet></router-outlet>
+            </page-transition>
+            <p class="text-center">&copy; 2017 Daimler Greater China & Beijing Mercedes-Benz Sales Service Co., Ltd..
+                All rights reserved.</p>
+        </section>
+    </section>
+
+</section>

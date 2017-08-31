@@ -1,0 +1,51 @@
+<section id="main-wrapper" class="theme-default">
+    <header id="header">
+        <div class="brand">
+            <a class="logo">
+                <i class="icon-layers"></i>
+                <!--<span>Mercedes-Benz</span>-->
+                <img src="assets/logo.png">
+            </a>
+        </div>
+        
+        <ul class="nav navbar-nav navbar-left">
+            <li class="toggle-navigation toggle-left">
+                <button class="sidebar-toggle" (click)="toggleSidebar()">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </li>
+        </ul>
+    </header>
+    
+    <div class="sidebar sidebar-left" [ngStyle]="sidebarStyle">
+        <accordion class="accordion" [expandAll]="true">
+            <accordion-group>
+                <accordion-heading>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-fw fa-id-card"></i> Management
+                    </a>
+                </accordion-heading>
+                <a routerLink="../panel/user" routerLinkActive="active">
+                    User
+                </a>
+                <a routerLink="../panel/usecase" routerLinkActive="active">
+                    Use case
+                </a>
+                <a routerLink="../panel/keyvalues" routerLinkActive="active">
+                    Key-Values
+                </a>
+                <a routerLink="../panel/feedback" routerLinkActive="active">
+                    Feedback
+                </a>
+            </accordion-group>
+        </accordion>
+    </div>
+    
+    <section class="main-content-wrapper" [ngStyle]="mainContentStyle">
+        <section id="main-content">
+            <page-transition>
+                <router-outlet></router-outlet>
+            </page-transition>
+        </section>
+    </section>
+</section>

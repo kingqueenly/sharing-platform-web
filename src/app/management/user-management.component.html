@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <section class="panel">
+      <div class="panel-body">
+        <button class="btn btn-sm btn-primary" (click)="create();"><i class="fa fa-plus"></i> New</button>
+        <div class="table-responsive">
+          <table class="table table-inbox table-hover">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>Username</th>
+              <th>Department</th>
+              <th>Working Area</th>
+              <th>Role</th>
+              <th>Professional</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Mobile</th>
+              <th>Authority</th>
+              <th>operation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of userList.list;let j=index" >
+              <th scope="row">{{j+1}}</th>
+              <td><span class="title">{{user.username}}</span></td>
+              <td>{{user.department}}</td>
+              <td>{{user.workArea}}</td>
+              <td>{{user.role}}</td>
+              <td>{{user.professional}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.phone}}</td>
+              <td>{{user.mobile}}</td>
+              <td>{{user.authority}}</td>
+              <td>
+                <button class="btn btn-default btn-xs tooltips" data-original-title="Trash" data-toggle="tooltip"
+                        (click)="edit(user)">
+                  <i class="fa fa-trash-o"></i> Update
+                </button>
+                <button *ngIf="loginUserId!=user.id" class="btn btn-default btn-xs tooltips" data-original-title="Trash" data-toggle="tooltip"
+                        (click)="delete($event,user)">
+                  <i class="fa fa-trash-o"></i> Delete
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <a class="btn btn-default btn-block show-more" (click)="showMore();"
+       *ngIf="userList.hasNextPage"><span>Show more </span><i class="fa fa-angle-double-down"
+                                                               aria-hidden="true"></i></a>
+  </div>
+</div>
+<div class="row" *ngIf="isCreate">
+  <div class="col-md-12 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form role="form" id="form" novalidate="novalidate" (ngSubmit)="onSubmit()" #f="ngForm">
+          <div class="form-group">
+            <label>Appellation</label>
+            <!--<input type="text" class="form-control" placeholder="Enter username" id="appellation" name="appellation" required-->
+                   <!--[(ngModel)]="editUser.appellation">-->
+            <select class="form-control" placeholder="Please select"
+                    [(ngModel)]="editUser.appellation" name="appellation" id="appellation">
+              <option *ngFor="let appellation of appellations"  [value]="appellation"
+              >{{appellation}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" placeholder="Enter username" id="username" name="username" required
+                   [(ngModel)]="editUser.username">
+          </div>
+          <div class="form-group">
+            <label>User Id</label>
+            <input type="text" class="form-control" placeholder="Enter user id" id="userId" name="userId" required
+                   [(ngModel)]="editUser.userId">
+          </div>
+          <div class="form-group">
+            <label>Organization</label>
+            <select class="form-control organization" placeholder="Please select"
+                    [(ngModel)]="editUser.organization" name="organization" id="organization">
+              <option *ngFor="let organization of organizations"  [value]="organization"
+              >{{organization}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Department</label>
+            <input type="text" class="form-control"  id="department" name="department"
+                   required [(ngModel)]="editUser.department">
+          </div>
+          <div class="form-group">
+            <label>Working Area</label>
+            <input type="text" class="form-control"  id="workArea" name="workArea"
+                   required [(ngModel)]="editUser.workArea">
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select class="form-control"
+                    [(ngModel)]="editUser.role" name="role" id="role">
+              <option *ngFor="let role of roleList.list"  [value]="role.text"
+              >{{role.text}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Professional</label>
+            <input type="text" class="form-control"  id="professional" name="professional"
+                   [(ngModel)]="editUser.professional">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control"  id="email" name="email"
+                   required [(ngModel)]="editUser.email">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="form-control"  id="phone" name="phone"
+                   required [(ngModel)]="editUser.phone">
+          </div>
+          <div class="form-group">
+            <label>Mobile</label>
+            <input type="text" class="form-control"  id="mobile" name="mobile"
+                   required [(ngModel)]="editUser.mobile">
+          </div>
+          <div class="form-group">
+            <label>Authority</label>
+            <select class="form-control" [(ngModel)]="editUser.authority" name="authority" id="authority">
+              <option *ngFor="let authority of authorityList" [value]="authority.name" [selected]="editUser.authority==authority.name">
+                {{authority.name}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Data Community</label>
+            <select class="form-control" [(ngModel)]="editUser.isDCRemember" name="isDCRemember" id="isDCRemember">
+              <option  [value]="false" [selected]="editUser.isDCRemember==false">False</option>
+              <option  [value]="true" [selected]="editUser.isDCRemember==true">True</option>
+            </select>
+          </div>
+          <div class="form-group user-managment-image">
+            <single-file-upload [(userSrc)]="userSrc"
+                                (uploadFinished)="uploadFinished($event)"></single-file-upload>
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!f.form.valid || !isUploadFinished">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

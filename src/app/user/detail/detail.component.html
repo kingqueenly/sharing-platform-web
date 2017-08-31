@@ -1,0 +1,245 @@
+<div class="row user-search">
+    <div class="col-md-3" style="padding-left: 0;">
+        <p>{{userProfile.username}}</p>
+        <p>Personal Information</p>
+    </div>
+    <div class="col-md-5"></div>
+    <div class="col-md-4 data-community-search">
+        <div class="input-group input-group-sm">
+            <div class="input-group-btn" dropdown>
+                <button dropdownToggle type="button" class="btn dropdown-toggle">{{searchItem}}&nbsp;&nbsp;<span
+                    class="caret"></span></button>
+                <ul *dropdownMenu class="dropdown-menu" role="menu" style="margin-top:-3px;">
+                    <li *ngFor="let item of searchUserItems"><a class="dropdown-item"
+                                                                (click)="selectSearchItem($event,item)" href="#">{{item}}</a>
+                    </li>
+                </ul>
+            </div><!-- /btn-group -->
+            <input type="text" class="form-control" placeholder="Type your search here..." [(ngModel)]="inputValue">
+            <span class="input-group-btn">
+            <button type="submit" class="btn btn-search" (click)="searchUser();">Search</button>
+          </span>
+        </div><!-- /input-group -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel user-page">
+            <div class="panel-body">
+                <div class="view-mail-header user-info-show" *ngIf="!isUpdateUser">
+                    <div class="media">
+                        <div class="media-left">
+                            <img *ngIf="userProfile.imgUrl!=null && userProfile.imgUrl!=''"
+                                 class="media-object img-circle"
+                                 src={{filePath+userProfile.imgUrl}}>
+                            <img *ngIf="userProfile.imgUrl==null || userProfile.imgUrl==''"
+                                 class="media-object img-circle"
+                                 src="assets/header.png">
+                        </div>
+                        <div class="media-body">
+                            <div class="row user">
+                                <div class="col-md-4 user-appell-name">
+                                    <span>{{userProfile.appellation}}&nbsp;{{userProfile.username}}</span>
+                                </div>
+                                <div class="col-md-8">
+                                    <user-level *ngIf="levelRule.length>0 && userProfile.id!= null"
+                                                [level]="userProfile.level"
+                                                [levelRule]="levelRule" [userScore]="userProfile.score"></user-level>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 user-info">
+                                    <p><span style="padding-right: 15px;">{{userProfile.organization}}</span><span>{{userProfile.department}}</span>
+                                    </p>
+                                    <p class="p-work-area"><span>{{userProfile.workArea}}</span><span>{{userProfile.role}}</span>
+                                    </p>
+                                    <p class="p-professional"><span>{{userProfile.professional}}</span></p>
+                                    <p class="p-email-mobile"><span><a [href]="emailto">{{userProfile.email}}</a><a
+                                        class="skype-link" [href]="skypeChat">&nbsp;</a></span></p>
+                                    <p><span class="mobile-block"
+                                             *ngIf="userProfile.mobile!=null && userProfile.mobile!=''">{{userProfile.mobile}}</span><span
+                                        class="phone-block">{{userProfile.phone}}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-mail-header update-user" *ngIf="isUpdateUser">
+                    <form [formGroup]="customForm" class="form-horizontal form-border" id="form" novalidate="novalidate"
+                          name="form" (ngSubmit)="onSubmit()" #userForm="ngForm">
+                        <div class="media">
+                            <div class="media-left">
+                                <single-file-upload [(userSrc)]="userSrc"
+                                                    (uploadFinished)="uploadFinished($event)"></single-file-upload>
+                            </div>
+                            <div class="media-body">
+                                <div class="row user">
+                                    <div class="form-group">
+                                        <div class="col-sm-2 user-info">
+                                            <select class="form-control" required [(ngModel)]="user.appellation"
+                                                    formControlName="appellation" name="appellation" id="appellation">
+                                                <option *ngFor="let appellation of appellations" [value]="appellation">
+                                                    {{appellation}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3 user-info">
+                                            <input class="form-control" type="text" required [(ngModel)]="user.username"
+                                                   placeholder="Last name, First name" formControlName="username"
+                                                   name="username">
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <user-level *ngIf="levelRule.length>0 && userProfile.id!= null"
+                                                        [level]="userProfile.level"
+                                                        [levelRule]="levelRule"
+                                                        [userScore]="userProfile.score"></user-level>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row user-update-info">
+                                    <div class="form-group">
+                                        <div class="col-sm-2">
+                                            <select class="form-control organization" (change)="changeOrg()" required
+                                                    [(ngModel)]="user.organization" formControlName="organization"
+                                                    name="organization" id="organization">
+                                                <option *ngFor="let organization of organizations"
+                                                        [value]="organization">{{organization}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <select class="form-control department" required
+                                                    [(ngModel)]="user.department" formControlName="department"
+                                                    name="department" id="department">
+                                                <option *ngFor="let dept of deptList" [value]="dept">{{dept}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group div-workarea-role-profess">
+                                        <div class="col-sm-5">
+                                            <input type="text" [(ngModel)]="user.workArea" formControlName="workArea"
+                                                   name="workArea"
+                                                   placeholder="{{user.workArea==undefined || user.workArea==''?'Working area':user.workArea}}">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <!--<input type="text" [(ngModel)]="userProfile.role" name="role"-->
+                                            <!--placeholder="{{userProfile.role==undefined || userProfile.role==''?'Role':userProfile.role}}">-->
+                                            <select class="form-control" *ngIf="user.isDCRemember" required
+                                                    [(ngModel)]="user.role" formControlName="role" name="role"
+                                                    id="role">
+                                                <option *ngFor="let role of roleList.list" [value]="role.text"
+                                                >{{role.text}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group div-workarea-role-profess profess">
+                                        <div class="col-sm-10">
+                                            <input type="text" [(ngModel)]="user.professional"
+                                                   formControlName="professional" name="professional"
+                                                   placeholder="{{userProfile.professional==undefined || userProfile.professional==''?'Professional know how':userProfile.professional}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 10px;">
+                                        <div class="col-sm-5">
+                                            <input type="email" required [(ngModel)]="user.email"
+                                                   formControlName="email" name="email"
+                                                   placeholder="{{userProfile.email==undefined || userProfile.email==''?'Email':userProfile.email}}"/>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="tel" required [(ngModel)]="user.phone" formControlName="phone"
+                                                   name="phone"
+                                                   placeholder="{{user.phone==undefined || user.phone==''?'Phone':user.phone}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-5">
+                                            <input type="tel" [(ngModel)]="user.mobile" formControlName="mobile"
+                                                   name="mobile"
+                                                   placeholder="{{user.mobile==undefined ||user.mobile==''?'Mobile':user.mobile}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group edit-save">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-lg btn-default update-user-save"
+                                                    [disabled]="!userForm.form.valid || !isUploadFinished">Save
+                                            </button>
+                                            <button type="button" class="btn btn-lg btn-default update-user-cancel"
+                                                    (click)="cancelEditUser();">Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="pull-right user_integral">
+                    {{userProfile.score}}
+                </div>
+                <div class="pull-right btn-edit-wraper" *ngIf="!isUpdateUser">
+                    <button class="btn btn-lg btn-default" (click)="editUser();"
+                            *ngIf="userProfile.id == loginUser.id || loginUser.authority=='administrator'">Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row user-page-case" *ngIf="createdCaseList.list!=undefined && createdCaseList.list.length>0">
+    <p class="user-card-title">
+        <span>Created Cases</span>
+        <button class="btn btn-default" [routerLink]="[ '/case/my', 'userCreateCase',userProfile.id]" routerL>More
+        </button>
+    </p>
+    <div class="col-md-4 user-card " *ngFor="let createdCase of createdCaseList.list ; let i=index">
+        <div class="panel " *ngIf="i<3">
+            <div class="panel-body">
+                <!-- ngRepeat: tab in tabs -->
+                <h1>{{createdCase.subject}}</h1>
+                <p>
+                    <i class="fa fa-clock-o"></i>
+                    <small>{{createdCase.createTime|amDateFormat:'YYYY-MM-DD HH:mm'}}</small>
+                </p>
+                
+                <div>
+                    <h2>Objective</h2>
+                    <p class="text-ellipsis">
+                        {{createdCase.vtext}}
+                    </p>
+                    <!--<p class="text-ellipsis">{{createdCase.values}}</p>-->
+                    <h2>Description</h2>
+                    <p class="text-ellipsis">{{createdCase.scenario}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row user-page-case" *ngIf="likeCaseList.list !=undefined && likeCaseList.list.length>0">
+    <p class="user-card-title">
+        <span>Liked Cases</span>
+        <button class="btn btn-default" [routerLink]="['/case/my', 'userLikeCase',userProfile.id]" routerL>More
+        </button>
+    </p>
+    <div class="col-md-4 user-card " *ngFor="let likeCase of likeCaseList.list; let j=index">
+        <div class="panel" *ngIf="j<3">
+            <div class="panel-body">
+                <!-- ngRepeat: tab in tabs -->
+                <h1>{{likeCase.subject}}</h1>
+                <p>
+                    <i class="fa fa-clock-o"></i>
+                    <small>{{likeCase.createTime|amDateFormat:'YYYY-MM-DD HH:mm'}}</small>
+                </p>
+                <div>
+                    <h2>Objective</h2>
+                    <p class="text-ellipsis">
+                        {{likeCase.vtext}}
+                    </p>
+                    <h2>Description</h2>
+                    <p class="text-ellipsis">{{likeCase.scenario}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,25 @@
+<div class="row user-list-row">
+  <div class="col-xs-12">
+    <div class=" panel search-user-list"  *ngFor="let user of userList"  [routerLink]="['/user/detail', user.id]">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-1">
+            <img  [src]="user.imgUrl==null || user.imgUrl=='' || user.imgUrl==undefined ? 'assets/header.png': filePath+user.imgUrl" class="img-circle">
+          </div>
+          <div class="col-md-2">
+            <h1 >{{user.username}}</h1>
+          </div>
+          <div class="col-md-4 user-department-div">
+            <p>{{user.department}}</p>
+            <span>{{user.professional}}</span>
+          </div>
+          <div class="col-md-4">
+            <p>{{user.email}}</p>
+            <p>{{user.mobile}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

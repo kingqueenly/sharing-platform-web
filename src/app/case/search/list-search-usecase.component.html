@@ -1,0 +1,62 @@
+<div class="row case-filter">
+    <div class="filter-label">Use Case Objective:</div>
+    <div class="filter-item">
+        <ul>
+            <li>
+                <a href="javascript:void(0)" [class.selected]="objective=='All'"
+                   [routerLink]="['/case/search','All',company,dept,stage]">All</a>
+            </li>
+            <li *ngFor="let o of objectiveList">
+                <a href="javascript:void(0)" [class.selected]="objective==o.text"
+                   [routerLink]="['/case/search',o.text,company,dept,stage]">{{o.text}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row case-filter">
+    <div class="filter-label">Stage:</div>
+    <div class="filter-item">
+        <ul>
+            <li *ngFor="let s of stages">
+                <a href="javascript:void(0)" [class.selected]="stage==s"
+                   [routerLink]="['/case/search',objective,company,dept,s]">{{s}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row case-filter">
+    <div class="filter-label">Company:</div>
+    <div class="filter-item">
+        <ul>
+            <li>
+                <a href="#" (click)="changeCompany($event, 'All')" [class.selected]="company=='All'">All</a>
+            </li>
+            <li *ngFor="let c of companyList">
+                <a href="#" (click)="changeCompany($event, c)" [class.selected]="company==c">{{c}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div *ngIf="!deptHidden" class="row case-filter">
+    <div class="filter-label">Department:</div>
+    <div class="filter-item">
+        <ul>
+            <li *ngFor="let d of deptList">
+                <a href="javascript:void(0)" [class.selected]="dept==d.text"
+                   [routerLink]="['/case/search',objective,company,d.text,stage]">{{d.text}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<case-list [pagedList]="pagedList" [valueType]="valueType"></case-list>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <a class="btn btn-default btn-block show-more" (click)="showMore();" *ngIf="pagedList.hasNextPage">
+            <span>Show more </span>
+            <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>
+
+
+

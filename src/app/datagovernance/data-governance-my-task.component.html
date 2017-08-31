@@ -1,0 +1,45 @@
+<p class="content-page-title">My Task</p>
+<div class="row case-filter">
+    <div class="filter-label">Status:</div>
+    <div class="filter-item">
+        <ul>
+            <li>
+                <a href="javascript:void(0)" [class.selected]="taskType=='in process'" (click)="filterTasks('in process')">On-Going</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" [class.selected]="taskType=='completed'" (click)="filterTasks('completed')">Completed</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="table-container">
+    <table class="table table-sp">
+        <thead>
+            <tr>
+                <th>NO.</th>
+                <th>Title</th>
+                <th>Created Time</th>
+                <th>Step</th>
+                <th>Applicant</th>
+                <th>Operating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let task of pagedTasks.list">
+                <td>{{task.id}}</td>
+                <td>{{task.applicationName}}</td>
+                <td>{{task.createTime | date: "yyyy-MM-dd HH:mm"}}</td>
+                <td>{{task.taskKey}}</td>
+                <td>{{task.applicant}}</td>
+                <td>
+                    <a href="javascript:void(0);" *ngIf="taskType=='in process'" class="dg-link" [routerLink]="['../flow-process/',task.id]">Process</a>
+                    <a href="javascript:void(0);" *ngIf="taskType=='completed'" class="dg-link" [routerLink]="['../flow-process/',task.id]">View</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="pagedTasks.total > pagedTasks.pageSize">
+        <pagination [totalItems]="pagedTasks.total" [(ngModel)]="pagedTasks.pageNum" (pageChanged)="pageChanged($event)"></pagination>
+    </div>
+</div>
+<br>

@@ -1,0 +1,31 @@
+<p class="content-page-title">My Application</p>
+<div class="table-container">
+    <table class="table table-sp">
+        <thead>
+        <tr>
+            <th>NO.</th>
+            <th>Title</th>
+            <th>Submitted Time</th>
+            <th>Status</th>
+            <th>Current Step</th>
+            <th>Operating</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let application of pagedApplication.list">
+            <td>{{application.id}}</td>
+            <td>{{application.applicationName}}</td>
+            <td>{{application.createTime | date: "yyyy-MM-dd HH:mm"}}</td>
+            <td>{{application.status}}</td>
+            <td>{{application.currentStep}}</td>
+            <td>
+                <a href="javascript:void(0);" class="dg-link" (click)="getTask(application)">View</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div *ngIf="pagedApplication.total > pagedApplication.pageSize">
+        <pagination [totalItems]="pagedApplication.total" [(ngModel)]="pagedApplication.pageNum" (pageChanged)="pageChanged($event)"></pagination>
+    </div>
+</div>
+<br>
